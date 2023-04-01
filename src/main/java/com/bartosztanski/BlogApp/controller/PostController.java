@@ -33,7 +33,7 @@ import com.bartosztanski.BlogApp.model.PostsResponse;
 import com.bartosztanski.BlogApp.service.PostService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+//@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/v1")
 public class PostController {
 
@@ -103,7 +103,7 @@ public class PostController {
 		byte[] image = postService.getImage(id);
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
 	}
-	@GetMapping("hello")
+	@GetMapping("/hello")
 	public ResponseEntity<String> hello() {
 		
 		return ResponseEntity.ok("hello");
