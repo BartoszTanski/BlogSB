@@ -103,7 +103,11 @@ public class PostController {
 		byte[] image = postService.getImage(id);
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
 	}
-
+	@GetMapping("hello")
+	public ResponseEntity<String> hello() {
+		
+		return ResponseEntity.ok("hello");
+	}
 }
 
 
