@@ -33,7 +33,7 @@ import com.bartosztanski.BlogApp.model.PostsResponse;
 import com.bartosztanski.BlogApp.service.PostService;
 
 @RestController
-//@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://bartosztanski.azurewebsites.net/")
 @RequestMapping("/api/v1")
 public class PostController {
 
