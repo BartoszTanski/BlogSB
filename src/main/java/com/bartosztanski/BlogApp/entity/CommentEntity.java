@@ -3,6 +3,7 @@ package com.bartosztanski.BlogApp.entity;
 import java.time.LocalDateTime;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 
 import com.bartosztanski.BlogApp.model.CommentResponse;
 
@@ -16,6 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CommentEntity {
+	@Id
 	private String id;
 	private String author;
 	private String profilePic;

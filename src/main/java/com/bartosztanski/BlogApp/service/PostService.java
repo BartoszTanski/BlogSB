@@ -13,10 +13,10 @@ import com.bartosztanski.BlogApp.model.PostResponse;
 @Service
 public interface PostService {
 	public String addPost(PostRequest postRequest); 
-	public void updatePost(PostEntity post); 
+	public void updatePost(String id, PostRequest postRequest); 
 	public List<PostEntity> getlAllPosts();
 	public List<PostEntity> getPostsByDate(LocalDate date); 
-	public void deletePostById(String id);
+	public void deleteById(String id);
 	public PostResponse getPostById(String id) throws PostNotFoundExcepction;
 	public byte[] getImage(String id); 
 }

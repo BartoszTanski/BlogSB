@@ -6,6 +6,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import com.bartosztanski.BlogApp.entity.PostEntity;
@@ -19,9 +23,11 @@ import com.bartosztanski.BlogApp.repository.PostRepository;
 public class PostServiceImpl implements PostService{
 	
 	private final PostRepository postRepository;
+	MongoTemplate mongoTemplate;
 	
-	public PostServiceImpl (PostRepository postRepository) {
+	public PostServiceImpl (PostRepository postRepository,MongoTemplate mongoTemplate) {
 		this.postRepository = postRepository;
+		this.mongoTemplate = mongoTemplate;
 	}
 
 	@Override
@@ -43,16 +49,22 @@ public class PostServiceImpl implements PostService{
 	}
 
 	@Override
-	public void updatePost(PostEntity postEntity) {
-		PostEntity savedPost = postRepository.findById(postEntity.getId())
-				.orElseThrow(()->new RuntimeException(
-						String.format("Cannot Find Post by ID %s", postEntity.getId())));
-		savedPost.setTime(postEntity.getTime());
-		savedPost.setContent(postEntity.getContent());
-		savedPost.setTitle(postEntity.getTitle());
+	public void updatePost(String id, PostRequest postRequest) {
+
+		Query query = new Query();
+		query.addCriteria(Criteria.where("id").is(id));
+		Update updateQuery = new Update(); 
 		
-		postRepository.save(savedPost);
+		updateQuery.set("title", postRequest.getTitle());
+		updateQuery.set("author", postRequest.getAuthor());
+		updateQuery.set("description", postRequest.getDescription());
+		updateQuery.set("content", postRequest.getContent());
+		updateQuery.set("tags", postRequest.getTags());
+		updateQuery.set("image", postRequest.getImage());
+		updateQuery.set("profilePic", postRequest.getProfilePic());
+		updateQuery.set("time", postRequest.getTime());
 		
+		mongoTemplate.findAndModify(query, updateQuery, PostEntity.class);
 	}
 
 	@Override
@@ -69,9 +81,8 @@ public class PostServiceImpl implements PostService{
 	}
 
 	@Override
-	public void deletePostById(String id) {
-		postRepository.deleteById(id);
-		
+	public void deleteById(String id) {
+	postRepository.deleteById(id);
 	}
 
 	@Override

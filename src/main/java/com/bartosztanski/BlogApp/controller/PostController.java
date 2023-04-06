@@ -33,7 +33,7 @@ import com.bartosztanski.BlogApp.model.PostsResponse;
 import com.bartosztanski.BlogApp.service.PostService;
 
 @RestController
-@CrossOrigin(origins = "https://bartosztanski.azurewebsites.net/")
+@CrossOrigin(origins = {"https://bartosztanski.azurewebsites.net/","http://localhost:3000"})
 @RequestMapping("/api/v1")
 public class PostController {
 
@@ -44,12 +44,12 @@ public class PostController {
 	}
 	
 	private final Logger LOGGER = LoggerFactory.getLogger(PostController.class);
-	
+	//Adding post 
 	@PostMapping("/posts")
 	public ResponseEntity<String> addPost(@RequestParam("title") String title, 
 			@RequestParam("description") String description,
-			@RequestParam("author") String author ,@RequestParam("content") String content,
-			@RequestParam("tags") String tags, @RequestParam("file") MultipartFile file,
+			@RequestParam("author") String author,@RequestParam("content") String content,
+			@RequestParam("tags") String tags,@RequestParam("file") MultipartFile file,
 			@RequestParam("profilePic") String profilePic) throws IOException {
 		LOGGER.info("Inside PostController.addPost");
 		PostRequest postRequest = PostRequest.builder()
@@ -67,9 +67,23 @@ public class PostController {
 	} 
 	
 	@PutMapping("/posts")
-	public ResponseEntity<PostEntity> updatePost(@RequestBody PostEntity postEntity) {
+	public ResponseEntity<PostEntity> updatePost(@RequestParam("id") String id,@RequestParam("title") String title, 
+			@RequestParam("description") String description,
+			@RequestParam("author") String author,@RequestParam("content") String content,
+			@RequestParam("tags") String tags,@RequestParam("file") MultipartFile file,
+			@RequestParam("profilePic") String profilePic) throws IOException {
+		PostRequest postRequest = PostRequest.builder()
+											 .title(title)
+											 .description(description)
+											 .author(author)
+											 .content(content)
+											 .tags(tags.split(","))
+											 .image(new Binary(BsonBinarySubType.BINARY, file.getBytes()))
+											 .profilePic(profilePic)
+											 .time(LocalDateTime.now())
+											 .build();
 		LOGGER.info("Inside PostController.updatePost");
-		postService.updatePost(postEntity);
+		postService.updatePost(id, postRequest);
 		return ResponseEntity.ok().build(); 
 	}
 	@GetMapping("/posts")
@@ -86,9 +100,9 @@ public class PostController {
 		return ResponseEntity.ok(postService.getPostsByDate(date));
 	}
 	@DeleteMapping("/posts/{id}")
-	public ResponseEntity<PostEntity> deletePost(@PathVariable("id") String id) {
+	public ResponseEntity<String> deletePost(@PathVariable("id") String id) {
 		LOGGER.info("Inside PostController.deletePost");
-		postService.deletePostById(id);
+		postService.deleteById(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	@GetMapping("/post/{id}")

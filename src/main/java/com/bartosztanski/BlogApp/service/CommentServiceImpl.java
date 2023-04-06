@@ -1,6 +1,7 @@
 package com.bartosztanski.BlogApp.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -50,9 +51,14 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public void deleteComment(String PostId, String commentId) {
-		// TODO Auto-generated method stub
+	public void deleteComment(String postId, String commentId) {
 		
+		List<CommentEntity> commentEntityList = postRepository.getCommentsByPostId(postId).getComments();
+		commentEntityList = commentEntityList.stream().filter(c ->!c.getId().equals(commentId)).toList();
+		Query query = new Query();
+		query.addCriteria(Criteria.where("id").is(postId));
+		Update updateQuery = new Update(); 
+		updateQuery.set("comments", commentEntityList);
+		mongoTemplate.findAndModify(query, updateQuery, PostEntity.class);		
 	}
-
 }

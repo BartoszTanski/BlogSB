@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,7 @@ import com.bartosztanski.BlogApp.model.CommentRequest;
 import com.bartosztanski.BlogApp.service.CommentService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = {"https://bartosztanski.azurewebsites.net/","http://localhost:3000"})
 @RequestMapping("api/v1/post")
 public class CommentController {
 
@@ -42,5 +43,11 @@ public class CommentController {
 
 		String id = commentService.addComment(commentRequest);
 		return new ResponseEntity<>(id+" succesfully ", HttpStatus.CREATED);
+	}
+	@DeleteMapping("/{postId}/{commentId}")
+	public ResponseEntity<String> deleteComment(@PathVariable("postId") String postId,@PathVariable("commentId") String commentId) {
+		LOGGER.info("Inside CommentController.deleteComment");
+		commentService.deleteComment(postId, commentId);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }
