@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -16,6 +19,7 @@ import com.bartosztanski.BlogApp.entity.PostEntity;
 import com.bartosztanski.BlogApp.error.PostNotFoundExcepction;
 import com.bartosztanski.BlogApp.model.PostRequest;
 import com.bartosztanski.BlogApp.model.PostResponse;
+import com.bartosztanski.BlogApp.model.PostsResponse;
 import com.bartosztanski.BlogApp.repository.PostRepository;
 
 
@@ -43,6 +47,7 @@ public class PostServiceImpl implements PostService{
 										  .image(postRequest.getImage())
 										  .time(postRequest.getTime())
 										  .comments(null)
+										  .likes(0)
 										  .build();
 		
 		return postRepository.insert(postEntity).getId();
@@ -109,6 +114,7 @@ public class PostServiceImpl implements PostService{
 														   .collect(Collectors.toList())
 															:null)
 												.tags(post.getTags())
+												.likes(post.getLikes())
 												.build();
 		return postResponse;
 	}
@@ -119,5 +125,36 @@ public class PostServiceImpl implements PostService{
 		byte[] image = post.getImage().getData();
 		return image;
 	}
+
+	@Override
+	public List<PostEntity> getTopPosts(int page, int limit) {
+		Page<PostEntity> pages = postRepository.findAllExcludeContent( 
+                PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "likes")));
+		List<PostEntity> topPosts = pages.getContent();
+		
+		return topPosts;
+	}
+
+	@Override
+	public void updateLikes(String postId, int i) {
+		
+		Query query=new Query(Criteria.where("id").is(postId));
+		PostEntity post=mongoTemplate.findOne(query,PostEntity.class);
+		System.out.println(post.getId());
+		System.out.println(post.getLikes());
+
+		if(post!=null){
+		   Update update=new Update().inc("likes",i);
+		   mongoTemplate.updateFirst(query,update,PostEntity.class);
+		}	    
+	}
+
+	@Override
+	public List<PostEntity> getPostsByTag(String tagId) {
+		List<PostEntity> posts = postRepository.findAllByTag(tagId);
+		return posts;
+	}
+	
+	
 	
 }

@@ -32,6 +32,7 @@ public class PostEntity {
 	private Binary image; //BSON Mongodb type
 	private String[] tags;
 	private List<CommentEntity> comments;
+	private int likes;
 	
 	public PostsResponse entityToResponse() {
 		PostsResponse postResponse = PostsResponse.builder()
@@ -43,6 +44,7 @@ public class PostEntity {
 										.profilePic(profilePic)
 										.time(time)
 										.tags(tags)
+										.likes(likes)
 										.build();
 		return postResponse;
 	}

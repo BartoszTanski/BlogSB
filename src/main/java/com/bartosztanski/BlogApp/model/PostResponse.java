@@ -23,4 +23,5 @@ public class PostResponse {
 	private String image; 
 	private String[] tags;
 	private List<CommentResponse> comments;
+	private int likes;
 }

@@ -61,6 +61,7 @@ public class PostController {
 											 .image(new Binary(BsonBinarySubType.BINARY, file.getBytes()))
 											 .profilePic(profilePic)
 											 .time(LocalDateTime.now())
+											 .likes(0)
 											 .build();
 		String id = postService.addPost(postRequest);
 		return new ResponseEntity<>("Post: "+id+ " added succesfully ", HttpStatus.CREATED);
@@ -93,7 +94,7 @@ public class PostController {
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
 		return ResponseEntity.ok(posts);
 	}
-	@GetMapping("/posts/{stringDate}")
+	@GetMapping("/posts/date/{stringDate}")
 	public ResponseEntity<List<PostEntity>> getPostsByDate(@PathVariable("stringDate") String stringDate) {
 		LOGGER.info("Inside PostController.getPostByDate");
 		LocalDate date = LocalDate.parse(stringDate);
@@ -105,11 +106,22 @@ public class PostController {
 		postService.deleteById(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
-	@GetMapping("/post/{id}")
+	@GetMapping("/posts/{id}")
 	public ResponseEntity<PostResponse> getPostById(@PathVariable("id") String id) throws PostNotFoundExcepction {
 		LOGGER.info("Inside PostController.getPostById");
 		PostResponse post = postService.getPostById(id);
 		return ResponseEntity.ok(post);
+	}
+	
+	@GetMapping("/posts/top")
+	public ResponseEntity<List<PostsResponse>> getTopPosts() {
+		LOGGER.info("Inside PostController.getTopPosts");
+		int page = 0;
+		int limit = 5; 
+		List<PostsResponse> topPosts = postService.getTopPosts(page, limit)
+				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
+		return ResponseEntity.ok(topPosts);
+		
 	}
 	@GetMapping(value="/image/{id}")
 	public ResponseEntity<byte[]> getImage(@PathVariable("id") String id) {
@@ -117,10 +129,32 @@ public class PostController {
 		byte[] image = postService.getImage(id);
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
 	}
+	
 	@GetMapping("/hello")
 	public ResponseEntity<String> hello() {
 		
 		return ResponseEntity.ok("hello");
+	}
+	
+	@PutMapping("/posts/{postId}/like")
+	public ResponseEntity<String> incrementLikes(@PathVariable("postId")String postId){
+		LOGGER.info("Inside PostController.incrementLikes");
+		postService.updateLikes(postId,1);
+		return ResponseEntity.ok("Updated likes - incremented");
+	}
+	@PutMapping("/posts/{postId}/unlike")
+	public ResponseEntity<String> decrenentLikes(@PathVariable("postId")String postId){
+		LOGGER.info("Inside PostController.decrenentLikes");
+		postService.updateLikes(postId,-1);
+		return ResponseEntity.ok("Updated likes - decremented");
+	}
+	
+	@GetMapping("/posts/tag/{tagId}")
+	public ResponseEntity<List<PostsResponse>> getPostsByTag(@PathVariable("tagId") String tagId) {
+		LOGGER.info("Inside PostController.getPostsByTag");
+		List<PostsResponse> posts = postService.getPostsByTag(tagId)
+				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
+		return ResponseEntity.ok(posts);
 	}
 }
 

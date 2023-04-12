@@ -23,4 +23,5 @@ public class PostRequest {
 	private String profilePic;
 	private Binary image; //BSON Mongodb type
 	private String[] tags;
+	private int likes;
 }

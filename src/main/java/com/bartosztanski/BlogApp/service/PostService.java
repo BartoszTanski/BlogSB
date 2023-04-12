@@ -18,5 +18,8 @@ public interface PostService {
 	public List<PostEntity> getPostsByDate(LocalDate date); 
 	public void deleteById(String id);
 	public PostResponse getPostById(String id) throws PostNotFoundExcepction;
-	public byte[] getImage(String id); 
+	public byte[] getImage(String id);
+	public List<PostEntity> getTopPosts(int page, int limit); 
+	public void updateLikes(String id, int i);
+	public List<PostEntity> getPostsByTag(String tagId);
 }

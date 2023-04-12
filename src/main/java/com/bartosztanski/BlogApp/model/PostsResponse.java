@@ -21,4 +21,5 @@ public class PostsResponse {
 	private String profilePic;
 	private String image; 
 	private String[] tags;
+	private int likes;
 }
