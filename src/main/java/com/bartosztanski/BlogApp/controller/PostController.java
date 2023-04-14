@@ -156,6 +156,14 @@ public class PostController {
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
 		return ResponseEntity.ok(posts);
 	}
+	@GetMapping("/posts/search/regex")
+	public ResponseEntity<List<PostsResponse>> getPostsByTitleRegex(@RequestParam("regex") String regex) {
+		LOGGER.info("Inside PostController.getPostsByTitleRegex");
+		System.out.println(regex);
+		List<PostsResponse> posts = postService.findPostByRegexpTitle(regex)
+				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
+		return ResponseEntity.ok(posts);
+	}
 }
 
 

@@ -140,8 +140,6 @@ public class PostServiceImpl implements PostService{
 		
 		Query query=new Query(Criteria.where("id").is(postId));
 		PostEntity post=mongoTemplate.findOne(query,PostEntity.class);
-		System.out.println(post.getId());
-		System.out.println(post.getLikes());
 
 		if(post!=null){
 		   Update update=new Update().inc("likes",i);
@@ -152,6 +150,12 @@ public class PostServiceImpl implements PostService{
 	@Override
 	public List<PostEntity> getPostsByTag(String tagId) {
 		List<PostEntity> posts = postRepository.findAllByTag(tagId);
+		return posts;
+	}
+
+	@Override
+	public List<PostEntity> findPostByRegexpTitle(String regexp) {
+		List<PostEntity> posts = postRepository.findPostByRegexpTitle(regexp);
 		return posts;
 	}
 	

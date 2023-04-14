@@ -22,4 +22,5 @@ public interface PostService {
 	public List<PostEntity> getTopPosts(int page, int limit); 
 	public void updateLikes(String id, int i);
 	public List<PostEntity> getPostsByTag(String tagId);
+	public List<PostEntity> findPostByRegexpTitle(String regexp);
 }
