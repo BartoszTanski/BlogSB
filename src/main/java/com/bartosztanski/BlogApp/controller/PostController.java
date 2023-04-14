@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.bson.BsonBinarySubType;
@@ -66,12 +67,12 @@ public class PostController {
 		String id = postService.addPost(postRequest);
 		return new ResponseEntity<>("Post: "+id+ " added succesfully ", HttpStatus.CREATED);
 	} 
-	
+	//Updating post by ID
 	@PutMapping("/posts")
 	public ResponseEntity<PostEntity> updatePost(@RequestParam("id") String id,@RequestParam("title") String title, 
 			@RequestParam("description") String description,
 			@RequestParam("author") String author,@RequestParam("content") String content,
-			@RequestParam("tags") String tags,@RequestParam("file") MultipartFile file,
+			@RequestParam("tags") String tags,@RequestParam("file") Optional<MultipartFile> file,
 			@RequestParam("profilePic") String profilePic) throws IOException {
 		PostRequest postRequest = PostRequest.builder()
 											 .title(title)
@@ -79,7 +80,7 @@ public class PostController {
 											 .author(author)
 											 .content(content)
 											 .tags(tags.split(","))
-											 .image(new Binary(BsonBinarySubType.BINARY, file.getBytes()))
+											 .image(file.isPresent()?new Binary(BsonBinarySubType.BINARY, file.get().getBytes()):null)
 											 .profilePic(profilePic)
 											 .time(LocalDateTime.now())
 											 .build();
@@ -87,6 +88,7 @@ public class PostController {
 		postService.updatePost(id, postRequest);
 		return ResponseEntity.ok().build(); 
 	}
+	//Getting all posts
 	@GetMapping("/posts")
 	public ResponseEntity<List<PostsResponse>> getlAllPosts() {
 		LOGGER.info("Inside PostController.getAllPosts");
@@ -94,25 +96,28 @@ public class PostController {
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
 		return ResponseEntity.ok(posts);
 	}
+	//Getting post by date
 	@GetMapping("/posts/date/{stringDate}")
 	public ResponseEntity<List<PostEntity>> getPostsByDate(@PathVariable("stringDate") String stringDate) {
 		LOGGER.info("Inside PostController.getPostByDate");
 		LocalDate date = LocalDate.parse(stringDate);
 		return ResponseEntity.ok(postService.getPostsByDate(date));
 	}
+	//Deleting post by ID
 	@DeleteMapping("/posts/{id}")
 	public ResponseEntity<String> deletePost(@PathVariable("id") String id) {
 		LOGGER.info("Inside PostController.deletePost");
 		postService.deleteById(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
+	//Getting post by ID
 	@GetMapping("/posts/{id}")
 	public ResponseEntity<PostResponse> getPostById(@PathVariable("id") String id) throws PostNotFoundExcepction {
 		LOGGER.info("Inside PostController.getPostById");
 		PostResponse post = postService.getPostById(id);
 		return ResponseEntity.ok(post);
 	}
-	
+	//Getting 5 posts with most likes 
 	@GetMapping("/posts/top")
 	public ResponseEntity<List<PostsResponse>> getTopPosts() {
 		LOGGER.info("Inside PostController.getTopPosts");
@@ -120,35 +125,36 @@ public class PostController {
 		int limit = 5; 
 		List<PostsResponse> topPosts = postService.getTopPosts(page, limit)
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
-		return ResponseEntity.ok(topPosts);
-		
+		return ResponseEntity.ok(topPosts);	
 	}
+	//Getting main image by post ID
 	@GetMapping(value="/image/{id}")
 	public ResponseEntity<byte[]> getImage(@PathVariable("id") String id) {
 		LOGGER.info("Inside PostController.getImage");
 		byte[] image = postService.getImage(id);
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
 	}
-	
+	//HELLO API TEST
 	@GetMapping("/hello")
 	public ResponseEntity<String> hello() {
 		
 		return ResponseEntity.ok("hello");
 	}
-	
+	//Updating post likes +1 TODO add param. instead 2 controllers
 	@PutMapping("/posts/{postId}/like")
 	public ResponseEntity<String> incrementLikes(@PathVariable("postId")String postId){
 		LOGGER.info("Inside PostController.incrementLikes");
 		postService.updateLikes(postId,1);
 		return ResponseEntity.ok("Updated likes - incremented");
 	}
+	//Updating post likes -1 TODO add param. instead 2 controllers
 	@PutMapping("/posts/{postId}/unlike")
 	public ResponseEntity<String> decrenentLikes(@PathVariable("postId")String postId){
 		LOGGER.info("Inside PostController.decrenentLikes");
 		postService.updateLikes(postId,-1);
 		return ResponseEntity.ok("Updated likes - decremented");
 	}
-	
+	//Getting posts by TAG
 	@GetMapping("/posts/tag/{tagId}")
 	public ResponseEntity<List<PostsResponse>> getPostsByTag(@PathVariable("tagId") String tagId) {
 		LOGGER.info("Inside PostController.getPostsByTag");
@@ -156,10 +162,10 @@ public class PostController {
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
 		return ResponseEntity.ok(posts);
 	}
+	//Getting posts by REGEX
 	@GetMapping("/posts/search/regex")
 	public ResponseEntity<List<PostsResponse>> getPostsByTitleRegex(@RequestParam("regex") String regex) {
 		LOGGER.info("Inside PostController.getPostsByTitleRegex");
-		System.out.println(regex);
 		List<PostsResponse> posts = postService.findPostByRegexpTitle(regex)
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
 		return ResponseEntity.ok(posts);
