@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bartosztanski.BlogApp.entity.PostEntity;
+import com.bartosztanski.BlogApp.error.PostInsertFailedException;
 import com.bartosztanski.BlogApp.error.PostNotFoundExcepction;
 import com.bartosztanski.BlogApp.model.PostRequest;
 import com.bartosztanski.BlogApp.model.PostResponse;
@@ -51,7 +52,7 @@ public class PostController {
 			@RequestParam("description") String description,
 			@RequestParam("author") String author,@RequestParam("content") String content,
 			@RequestParam("tags") String tags,@RequestParam("file") MultipartFile file,
-			@RequestParam("profilePic") String profilePic) throws IOException {
+			@RequestParam("profilePic") String profilePic) throws PostInsertFailedException, IOException {
 		LOGGER.info("Inside PostController.addPost");
 		PostRequest postRequest = PostRequest.builder()
 											 .title(title)
@@ -96,12 +97,11 @@ public class PostController {
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
 		return ResponseEntity.ok(posts);
 	}
-	//Getting post by date
-	@GetMapping("/posts/date/{stringDate}")
-	public ResponseEntity<List<PostEntity>> getPostsByDate(@PathVariable("stringDate") String stringDate) {
+	//Getting post by days interval
+	@GetMapping("/posts/days/{days}")
+	public ResponseEntity<List<PostEntity>> getPostsByDate(@PathVariable("days") int days) {
 		LOGGER.info("Inside PostController.getPostByDate");
-		LocalDate date = LocalDate.parse(stringDate);
-		return ResponseEntity.ok(postService.getPostsByDate(date));
+		return ResponseEntity.ok(postService.getPostsByDate(days));
 	}
 	//Deleting post by ID
 	@DeleteMapping("/posts/{id}")
@@ -117,7 +117,7 @@ public class PostController {
 		PostResponse post = postService.getPostById(id);
 		return ResponseEntity.ok(post);
 	}
-	//Getting 5 posts with most likes 
+	//Getting 5 posts with most likes  TODO add params to enable change of skip and limit
 	@GetMapping("/posts/top")
 	public ResponseEntity<List<PostsResponse>> getTopPosts() {
 		LOGGER.info("Inside PostController.getTopPosts");
@@ -162,7 +162,7 @@ public class PostController {
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
 		return ResponseEntity.ok(posts);
 	}
-	//Getting posts by REGEX
+	//Getting posts by title REGEX
 	@GetMapping("/posts/search/regex")
 	public ResponseEntity<List<PostsResponse>> getPostsByTitleRegex(@RequestParam("regex") String regex) {
 		LOGGER.info("Inside PostController.getPostsByTitleRegex");

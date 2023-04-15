@@ -17,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.bartosztanski.BlogApp.entity.PostEntity;
+import com.bartosztanski.BlogApp.error.PostInsertFailedException;
 import com.bartosztanski.BlogApp.error.PostNotFoundExcepction;
 import com.bartosztanski.BlogApp.model.PostRequest;
 import com.bartosztanski.BlogApp.model.PostResponse;
@@ -52,7 +53,7 @@ class PostServiceTest {
 
 	@Test
 	@DisplayName("Add new post if valid request")
-	public void ShouldReturnPostEntityIdIfPostRequestValid() {
+	public void ShouldReturnPostEntityIdIfPostRequestValid() throws PostInsertFailedException {
 		
 		PostRequest postRequest = 
 				PostRequest.builder()

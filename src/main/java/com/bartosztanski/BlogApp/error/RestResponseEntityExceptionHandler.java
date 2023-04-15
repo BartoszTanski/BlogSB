@@ -21,4 +21,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 		ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND,postNotFoundExcepction.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
 	}
+	
+	@ExceptionHandler(PostInsertFailedException.class)
+	public ResponseEntity<ErrorMessage> postNotPoundException(PostInsertFailedException postInsertFailedException, 
+																					WebRequest webRequest) {
+		
+		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST,postInsertFailedException.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+	}
 }

@@ -1,7 +1,10 @@
 package com.bartosztanski.BlogApp.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,6 +19,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import com.bartosztanski.BlogApp.entity.PostEntity;
+import com.bartosztanski.BlogApp.error.PostInsertFailedException;
 import com.bartosztanski.BlogApp.error.PostNotFoundExcepction;
 import com.bartosztanski.BlogApp.model.PostRequest;
 import com.bartosztanski.BlogApp.model.PostResponse;
@@ -35,7 +39,7 @@ public class PostServiceImpl implements PostService{
 	}
 
 	@Override
-	public String addPost(PostRequest postRequest) {
+	public String addPost(PostRequest postRequest) throws PostInsertFailedException {
 		
 		PostEntity postEntity = PostEntity.builder()
 										  .title(postRequest.getTitle())
@@ -74,14 +78,16 @@ public class PostServiceImpl implements PostService{
 
 	@Override
 	public List<PostEntity> getlAllPosts() {
-		return postRepository.findAll();		
+		return postRepository.getAllPosts();		
 	}
 
 	@Override
-	public List<PostEntity> getPostsByDate(LocalDate date) {
-		return postRepository.findByDate(date)
+	public List<PostEntity> getPostsByDate(int days) {
+		LocalDateTime date = LocalDateTime.now().minusDays(days);
+		Date out = Date.from(date.atZone(ZoneId.systemDefault()).toInstant());
+		return postRepository.findByDate(out)
 				.orElseThrow(()->new RuntimeException(
-						String.format("Cannot Find Post by date %s", date)));
+						String.format("Cannot Find Post added in last %s days", days)));
 		
 	}
 
@@ -128,7 +134,9 @@ public class PostServiceImpl implements PostService{
 
 	@Override
 	public List<PostEntity> getTopPosts(int page, int limit) {
-		Page<PostEntity> pages = postRepository.findAllExcludeContent( 
+		LocalDateTime date = LocalDateTime.now().minusDays(7);
+		Date out = Date.from(date.atZone(ZoneId.systemDefault()).toInstant());
+		Page<PostEntity> pages = postRepository.findAllExcludeContent(out, 
                 PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "likes")));
 		List<PostEntity> topPosts = pages.getContent();
 		
