@@ -7,5 +7,5 @@ spring:
   data:
     mongodb:
       database: Blog
-      uri: ${secrets.MONGODB_URI}
+      uri: ${MONGODB_URI}
 
