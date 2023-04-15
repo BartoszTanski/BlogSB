@@ -11,9 +11,6 @@ on:
 
 jobs:
   build:
-    env: # Or as an environment variable
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      ACTIVE_PROFILE: ${{ secrets.ACTIVE_PROFILE }}
     runs-on: windows-latest
 
     steps:
@@ -52,5 +49,5 @@ jobs:
         with:
           app-name: 'blogbartosz'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_88E75C8475CD4AC2940AB9AF1261DD20 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8044014E9E2048DF869D1C926A9237D3 }}
           package: '*.jar'
