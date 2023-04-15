@@ -1,17 +1,3 @@
 spring:
   profiles:
-      active: ${ACTIVE_PROFILE}
-  servlet:
-    multipart:
-      enabled: 'true'
-      max-request-size: 256MB
-      max-file-size: 256MB
-  data:
-    mongodb:
-      database: Blog
-      port: '27017'
-      host: localhost
-welcome:
-  message: Welcome to Bartosz Blog!
-#To fetch the value put:    @Value("${welcome.message}")
-#above declared variable:   private String welcomeMessage;
+      active: prod
