@@ -1,6 +1,6 @@
 spring:
   profiles:
-      active: prod
+      active: ${ACTIVE_PROFILE}
   servlet:
     multipart:
       enabled: 'true'

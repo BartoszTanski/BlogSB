@@ -11,6 +11,9 @@ on:
 
 jobs:
   build:
+    env: # Or as an environment variable
+      MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      ACTIVE_PROFILE: ${{ secrets.ACTIVE_PROFILE }}
     runs-on: windows-latest
 
     steps:
