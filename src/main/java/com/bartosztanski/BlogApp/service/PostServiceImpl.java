@@ -1,13 +1,10 @@
 package com.bartosztanski.BlogApp.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +20,6 @@ import com.bartosztanski.BlogApp.error.PostInsertFailedException;
 import com.bartosztanski.BlogApp.error.PostNotFoundExcepction;
 import com.bartosztanski.BlogApp.model.PostRequest;
 import com.bartosztanski.BlogApp.model.PostResponse;
-import com.bartosztanski.BlogApp.model.PostsResponse;
 import com.bartosztanski.BlogApp.repository.PostRepository;
 
 
@@ -78,7 +74,7 @@ public class PostServiceImpl implements PostService{
 
 	@Override
 	public List<PostEntity> getlAllPosts() {
-		return postRepository.getAllPosts();		
+		return postRepository.getAllPosts( Sort.by(Sort.Direction.DESC, "time"));		
 	}
 
 	@Override
@@ -105,23 +101,7 @@ public class PostServiceImpl implements PostService{
 		}
 		
 		PostEntity post = optionalPost.get();
-		PostResponse postResponse = PostResponse.builder()
-												.id(post.getId())
-												.title(post.getTitle())
-												.author(post.getAuthor())
-												.description(post.getDescription())
-												.content(post.getContent())
-												.time(post.getTime())
-												.image("data:image/png;base64,"+
-												Base64.getEncoder().encodeToString(post.getImage().getData()))
-												.profilePic(post.getProfilePic())
-												.comments(post.getComments() != null? post.getComments().stream()
-														   .map(com -> com.entityToResponse())
-														   .collect(Collectors.toList())
-															:null)
-												.tags(post.getTags())
-												.likes(post.getLikes())
-												.build();
+		PostResponse postResponse = post.entityToResponse();
 		return postResponse;
 	}
 

@@ -1,7 +1,6 @@
 package com.bartosztanski.BlogApp.controller;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +29,6 @@ import com.bartosztanski.BlogApp.error.PostInsertFailedException;
 import com.bartosztanski.BlogApp.error.PostNotFoundExcepction;
 import com.bartosztanski.BlogApp.model.PostRequest;
 import com.bartosztanski.BlogApp.model.PostResponse;
-import com.bartosztanski.BlogApp.model.PostsResponse;
 import com.bartosztanski.BlogApp.service.PostService;
 
 @RestController
@@ -91,9 +88,9 @@ public class PostController {
 	}
 	//Getting all posts
 	@GetMapping("/posts")
-	public ResponseEntity<List<PostsResponse>> getlAllPosts() {
+	public ResponseEntity<List<PostResponse>> getlAllPosts() {
 		LOGGER.info("Inside PostController.getAllPosts");
-		List<PostsResponse> posts = postService.getlAllPosts()
+		List<PostResponse> posts = postService.getlAllPosts()
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
 		return ResponseEntity.ok(posts);
 	}
@@ -119,11 +116,11 @@ public class PostController {
 	}
 	//Getting 5 posts with most likes  TODO add params to enable change of skip and limit
 	@GetMapping("/posts/top")
-	public ResponseEntity<List<PostsResponse>> getTopPosts() {
+	public ResponseEntity<List<PostResponse>> getTopPosts() {
 		LOGGER.info("Inside PostController.getTopPosts");
 		int page = 0;
 		int limit = 5; 
-		List<PostsResponse> topPosts = postService.getTopPosts(page, limit)
+		List<PostResponse> topPosts = postService.getTopPosts(page, limit)
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
 		return ResponseEntity.ok(topPosts);	
 	}
@@ -138,7 +135,7 @@ public class PostController {
 	@GetMapping("/hello")
 	public ResponseEntity<String> hello() {
 		
-		return ResponseEntity.ok("hello");
+		return ResponseEntity.ok("server status: OK");
 	}
 	//Updating post likes +1 TODO add param. instead 2 controllers
 	@PutMapping("/posts/{postId}/like")
@@ -156,17 +153,17 @@ public class PostController {
 	}
 	//Getting posts by TAG
 	@GetMapping("/posts/tag/{tagId}")
-	public ResponseEntity<List<PostsResponse>> getPostsByTag(@PathVariable("tagId") String tagId) {
+	public ResponseEntity<List<PostResponse>> getPostsByTag(@PathVariable("tagId") String tagId) {
 		LOGGER.info("Inside PostController.getPostsByTag");
-		List<PostsResponse> posts = postService.getPostsByTag(tagId)
+		List<PostResponse> posts = postService.getPostsByTag(tagId)
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
 		return ResponseEntity.ok(posts);
 	}
 	//Getting posts by title REGEX
 	@GetMapping("/posts/search/regex")
-	public ResponseEntity<List<PostsResponse>> getPostsByTitleRegex(@RequestParam("regex") String regex) {
+	public ResponseEntity<List<PostResponse>> getPostsByTitleRegex(@RequestParam("regex") String regex) {
 		LOGGER.info("Inside PostController.getPostsByTitleRegex");
-		List<PostsResponse> posts = postService.findPostByRegexpTitle(regex)
+		List<PostResponse> posts = postService.findPostByRegexpTitle(regex)
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
 		return ResponseEntity.ok(posts);
 	}
