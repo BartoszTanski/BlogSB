@@ -33,12 +33,10 @@ build/
 .vscode/
 
 ### Properties ###
-.src/main/resources/application.properties
-.src/main/resources/application-dev.yaml
-.src/main/resources/application-prod.yaml
-.src/main/resources/application.yaml
-<<<<<<< HEAD
-.env.local
-=======
-.env.local
->>>>>>> 14a107e629f8dff4aea579db61018b1c7c11eba0
+*/main/resources/application.properties
+*/main/resources/application-dev.yaml
+*/main/resources/application-prod.yaml
+*/main/resources/application.yaml
+*.env.local
+*.application.properties
+*/main/resources/*
