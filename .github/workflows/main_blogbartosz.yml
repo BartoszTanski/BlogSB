@@ -8,12 +8,11 @@ on:
     branches:
       - main
   workflow_dispatch:
+env:
+  MONGODB_URI: ${{ vars.MONGODB_URI }}
 
 jobs:
   build:
-    env: # Or as an environment variable
-      MONGODB_URI: ${{ secrets.MONGODB_URI }}
-      ACTIVE_PROFILE: ${{ secrets.ACTIVE_PROFILE }}
     runs-on: windows-latest
 
     steps:
@@ -52,5 +51,5 @@ jobs:
         with:
           app-name: 'blogbartosz'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_88E75C8475CD4AC2940AB9AF1261DD20 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B020409019E349E9A34E184F9913019F }}
           package: '*.jar'

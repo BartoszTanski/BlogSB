@@ -37,4 +37,8 @@ build/
 .src/main/resources/application-dev.yaml
 .src/main/resources/application-prod.yaml
 .src/main/resources/application.yaml
+<<<<<<< HEAD
 .env.local
+=======
+.env.local
+>>>>>>> 14a107e629f8dff4aea579db61018b1c7c11eba0
