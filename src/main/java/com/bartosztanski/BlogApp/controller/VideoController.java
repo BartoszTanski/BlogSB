@@ -4,10 +4,10 @@ import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,32 +35,32 @@ public class VideoController {
 	
 	private final Logger LOGGER = LoggerFactory.getLogger(VideoController.class);
 	
+	//GET VIDEO DESCRIPTION
 	@GetMapping("/video/{id}")
 	public ResponseEntity<VideoEntity> getVideoById(@PathVariable("id") String id) throws IllegalStateException, IOException {
 		LOGGER.info("Inside PostController.getVideoById");
 		VideoEntity video = videoService.getVideo(id);
-//		HttpHeaders responseHeaders = new HttpHeaders();
-//	    responseHeaders.set("Access-Control-Allow-Origin", 
-//	      "*");
 		return ResponseEntity.ok(video);
-//		.headers(responseHeaders)
-//			      .body(video);
 	}
+	//ADD VIDEO
 	@PostMapping("/video")
 	public ResponseEntity<String> addVideo(@RequestParam("video") MultipartFile file) throws IOException {
 		LOGGER.info("Inside PostController.addVideo");
-//		HttpHeaders responseHeaders = new HttpHeaders();
-//	    responseHeaders.set("Access-Control-Allow-Origin", 
-//	      "*");
 		String id = videoService.addVideo(file);
 		return ResponseEntity.ok(id);
-//		.headers(responseHeaders)
-//			      .body(id);
 	}
+	//STREAM VIDEO BY ID
 	@GetMapping("/video/stream/{id}")
 	public void streamVideo(@PathVariable String id, HttpServletResponse response) throws Exception {
 		LOGGER.info("Inside PostController.streamVideo");
 	    VideoEntity video = videoService.getVideo(id);
 	    FileCopyUtils.copy(video.getStream(), response.getOutputStream());        
+	}
+	//DELETE VIDEO BY ID
+	@DeleteMapping("/video/{id}")
+	public ResponseEntity<String> deleteVideo(@PathVariable("id") String id) {
+		LOGGER.info("Inside PostController.addVideo");
+		videoService.deleteVideo(id);
+		return ResponseEntity.ok("Video deleted");
 	}
 }

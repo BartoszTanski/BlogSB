@@ -52,7 +52,7 @@ class PostServiceTest {
 
 	@Test
 	@DisplayName("Add new post if valid request")
-	public void ShouldReturnPostEntityIdIfPostRequestValid() throws PostInsertFailedException {
+	public void ShouldReturnPostEntityIdIfPostRequestValid() throws PostInsertFailedException , Exception {
 		
 		PostRequest postRequest = 
 				PostRequest.builder()

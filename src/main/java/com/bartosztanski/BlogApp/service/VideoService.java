@@ -40,4 +40,8 @@ public class VideoService {
 	        ObjectId id = gridFsTemplate.store(file.getInputStream(), file.getName(), file.getContentType(), metaData);
 	        return id.toString();
 	    }
+
+		public void deleteVideo(String id) {
+			gridFsTemplate.delete(new Query(Criteria.where("_id").is(id)));
+		}
 }

@@ -51,7 +51,7 @@ public class PostController {
 			@RequestParam("tags") String tags,@RequestParam("file") MultipartFile file,
 			@RequestParam("profilePic") String profilePic,
 			@RequestParam("video") String video,
-			@RequestParam("email") String email) throws PostInsertFailedException, IOException {
+			@RequestParam("email") String email) throws PostInsertFailedException, IOException , Exception {
 		LOGGER.info("Inside PostController.addPost");
 		PostRequest postRequest = PostRequest.builder()
 											 .title(title)

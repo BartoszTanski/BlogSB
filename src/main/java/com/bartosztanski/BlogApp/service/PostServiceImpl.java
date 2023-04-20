@@ -21,6 +21,7 @@ import com.bartosztanski.BlogApp.error.PostNotFoundExcepction;
 import com.bartosztanski.BlogApp.model.PostRequest;
 import com.bartosztanski.BlogApp.model.PostResponse;
 import com.bartosztanski.BlogApp.repository.PostRepository;
+import com.bartosztanski.BlogApp.utils.ImageResizeService;
 
 
 @Service
@@ -28,14 +29,16 @@ public class PostServiceImpl implements PostService{
 	
 	private final PostRepository postRepository;
 	MongoTemplate mongoTemplate;
+	ImageResizeService imageResizeService;
 	
-	public PostServiceImpl (PostRepository postRepository,MongoTemplate mongoTemplate) {
+	public PostServiceImpl (PostRepository postRepository,MongoTemplate mongoTemplate, ImageResizeService imageResizeService) {
 		this.postRepository = postRepository;
 		this.mongoTemplate = mongoTemplate;
+		this.imageResizeService = imageResizeService;
 	}
 
 	@Override
-	public String addPost(PostRequest postRequest) throws PostInsertFailedException {
+	public String addPost(PostRequest postRequest) throws PostInsertFailedException, Exception {
 		
 		PostEntity postEntity = PostEntity.builder()
 										  .title(postRequest.getTitle())
@@ -44,7 +47,7 @@ public class PostServiceImpl implements PostService{
 										  .content(postRequest.getContent())
 										  .tags(postRequest.getTags())
 										  .profilePic(postRequest.getProfilePic())
-										  .image(postRequest.getImage())
+										  .image(imageResizeService.resizeImage(postRequest.getImage(),1280,720))
 										  .time(postRequest.getTime())
 										  .video(postRequest.getVideo())
 										  .email(postRequest.getEmail())

@@ -12,7 +12,7 @@ import com.bartosztanski.BlogApp.model.PostResponse;
 
 @Service
 public interface PostService {
-	public String addPost(PostRequest postRequest) throws PostInsertFailedException; 
+	public String addPost(PostRequest postRequest) throws PostInsertFailedException, Exception; 
 	public void updatePost(String id, PostRequest postRequest); 
 	public List<PostEntity> getlAllPosts();
 	public List<PostEntity> getPostsByDate(int days); 
