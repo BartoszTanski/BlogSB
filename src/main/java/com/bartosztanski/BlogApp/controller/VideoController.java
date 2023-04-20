@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -21,8 +22,9 @@ import com.bartosztanski.BlogApp.service.VideoService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@CrossOrigin(origins = {"https://bartosztanski.azurewebsites.net/","https://bartosztanski.azurewebsites.net","http://localhost:3000"})
-@RequestMapping("/api/v1/video")
+@CrossOrigin(origins = {"https://bartosztanski.azurewebsites.net","https://bartosztanski.azurewebsites.net/",
+		"http://localhost:3000/"})
+@RequestMapping("/api/v1/")
 public class VideoController {
 	
 	private final VideoService videoService;
@@ -33,20 +35,31 @@ public class VideoController {
 	
 	private final Logger LOGGER = LoggerFactory.getLogger(VideoController.class);
 	
-	@GetMapping("/{id}")
+	@GetMapping("/video/{id}")
 	public ResponseEntity<VideoEntity> getVideoById(@PathVariable("id") String id) throws IllegalStateException, IOException {
 		LOGGER.info("Inside PostController.getVideoById");
 		VideoEntity video = videoService.getVideo(id);
+//		HttpHeaders responseHeaders = new HttpHeaders();
+//	    responseHeaders.set("Access-Control-Allow-Origin", 
+//	      "*");
 		return ResponseEntity.ok(video);
+//		.headers(responseHeaders)
+//			      .body(video);
 	}
-	@PostMapping("/")
+	@PostMapping("/video")
 	public ResponseEntity<String> addVideo(@RequestParam("video") MultipartFile file) throws IOException {
 		LOGGER.info("Inside PostController.addVideo");
+//		HttpHeaders responseHeaders = new HttpHeaders();
+//	    responseHeaders.set("Access-Control-Allow-Origin", 
+//	      "*");
 		String id = videoService.addVideo(file);
 		return ResponseEntity.ok(id);
+//		.headers(responseHeaders)
+//			      .body(id);
 	}
-	@GetMapping("/stream/{id}")
+	@GetMapping("/video/stream/{id}")
 	public void streamVideo(@PathVariable String id, HttpServletResponse response) throws Exception {
+		LOGGER.info("Inside PostController.streamVideo");
 	    VideoEntity video = videoService.getVideo(id);
 	    FileCopyUtils.copy(video.getStream(), response.getOutputStream());        
 	}

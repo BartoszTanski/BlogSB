@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.bartosztanski</groupId>
 	<artifactId>BlogApp</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>BlogApp</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
@@ -35,6 +35,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+    		<groupId>org.springframework.boot</groupId>
+   			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 	</dependencies>
 
