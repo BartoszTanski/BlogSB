@@ -46,6 +46,8 @@ public class PostServiceImpl implements PostService{
 										  .profilePic(postRequest.getProfilePic())
 										  .image(postRequest.getImage())
 										  .time(postRequest.getTime())
+										  .video(postRequest.getVideo())
+										  .email(postRequest.getEmail())
 										  .comments(null)
 										  .likes(0)
 										  .build();
@@ -66,7 +68,9 @@ public class PostServiceImpl implements PostService{
 		updateQuery.set("content", postRequest.getContent());
 		updateQuery.set("tags", postRequest.getTags());
 		if(postRequest.getImage()!=null) {updateQuery.set("image", postRequest.getImage());}
+		if(postRequest.getVideo()!=null) {updateQuery.set("video", postRequest.getVideo());}
 		updateQuery.set("profilePic", postRequest.getProfilePic());
+		updateQuery.set("email", postRequest.getEmail());
 		updateQuery.set("time", postRequest.getTime());
 		
 		mongoTemplate.findAndModify(query, updateQuery, PostEntity.class);
@@ -137,7 +141,7 @@ public class PostServiceImpl implements PostService{
 
 	@Override
 	public List<PostEntity> getPostsByTag(String tagId) {
-		List<PostEntity> posts = postRepository.findAllByTag(tagId);
+		List<PostEntity> posts = postRepository.findAllByTag(tagId, Sort.by(Sort.Direction.DESC, "time"));
 		return posts;
 	}
 

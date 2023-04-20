@@ -49,7 +49,9 @@ public class PostController {
 			@RequestParam("description") String description,
 			@RequestParam("author") String author,@RequestParam("content") String content,
 			@RequestParam("tags") String tags,@RequestParam("file") MultipartFile file,
-			@RequestParam("profilePic") String profilePic) throws PostInsertFailedException, IOException {
+			@RequestParam("profilePic") String profilePic,
+			@RequestParam("video") String video,
+			@RequestParam("email") String email) throws PostInsertFailedException, IOException {
 		LOGGER.info("Inside PostController.addPost");
 		PostRequest postRequest = PostRequest.builder()
 											 .title(title)
@@ -57,10 +59,12 @@ public class PostController {
 											 .author(author)
 											 .content(content)
 											 .tags(tags.split(","))
-											 .image(new Binary(BsonBinarySubType.BINARY, file.getBytes()))
+											 .image(file!=null? new Binary(BsonBinarySubType.BINARY, file.getBytes()):null)
 											 .profilePic(profilePic)
 											 .time(LocalDateTime.now())
 											 .likes(0)
+											 .video(video)
+											 .email(email)
 											 .build();
 		String id = postService.addPost(postRequest);
 		return new ResponseEntity<>("Post: "+id+ " added succesfully ", HttpStatus.CREATED);
@@ -71,7 +75,9 @@ public class PostController {
 			@RequestParam("description") String description,
 			@RequestParam("author") String author,@RequestParam("content") String content,
 			@RequestParam("tags") String tags,@RequestParam("file") Optional<MultipartFile> file,
-			@RequestParam("profilePic") String profilePic) throws IOException {
+			@RequestParam("profilePic") String profilePic,
+			@RequestParam("video") String video,
+			@RequestParam("email") String email) throws IOException {
 		PostRequest postRequest = PostRequest.builder()
 											 .title(title)
 											 .description(description)
@@ -81,6 +87,8 @@ public class PostController {
 											 .image(file.isPresent()?new Binary(BsonBinarySubType.BINARY, file.get().getBytes()):null)
 											 .profilePic(profilePic)
 											 .time(LocalDateTime.now())
+											 .video(video)
+											 .email(email)
 											 .build();
 		LOGGER.info("Inside PostController.updatePost");
 		postService.updatePost(id, postRequest);
@@ -166,7 +174,7 @@ public class PostController {
 		List<PostResponse> posts = postService.findPostByRegexpTitle(regex)
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
 		return ResponseEntity.ok(posts);
-	}
+	}	
 }
 
 

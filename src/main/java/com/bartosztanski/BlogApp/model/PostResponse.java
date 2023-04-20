@@ -22,6 +22,8 @@ public class PostResponse {
 	private String profilePic;
 	private String image; 
 	private String[] tags;
+	private String video;
+	private String email;
 	private List<CommentResponse> comments;
 	private int likes;
 }

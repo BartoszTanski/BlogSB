@@ -33,7 +33,7 @@ public interface PostRepository extends MongoRepository<PostEntity, String> {
 	Page<PostEntity> findAllExcludeContent(Date date,Pageable pageable);
 	//Find POSTS by TAG
 	@Query(value = "{'tags': ?0}",fields = "{'comments' : 0, 'content' : 0}")
-	List<PostEntity> findAllByTag(String tagId);
+	List<PostEntity> findAllByTag(String tagId, Sort sort);
 	//Find POSTS by TITLE REGEX
 	@Query(value="{ 'title' : { $regex: ?0 } }",fields = "{'comments' : 0, 'content' : 0, 'author' : 0, 'profilePic' : 0, 'description' :0}")
 	List<PostEntity> findPostByRegexpTitle(String regexp);

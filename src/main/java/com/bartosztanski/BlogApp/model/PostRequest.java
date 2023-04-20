@@ -23,5 +23,7 @@ public class PostRequest {
 	private String profilePic;
 	private Binary image; //BSON Mongodb type
 	private String[] tags;
+	private String video;
+	private String email;
 	private int likes;
 }

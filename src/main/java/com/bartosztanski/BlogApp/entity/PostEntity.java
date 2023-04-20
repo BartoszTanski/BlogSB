@@ -32,6 +32,8 @@ public class PostEntity {
 	private String profilePic;
 	private Binary image; //BSON Mongodb type
 	private String[] tags;
+	private String video;
+	private String email;
 	private List<CommentEntity> comments;
 	private int likes;
 	
@@ -42,11 +44,13 @@ public class PostEntity {
 										.author(author)
 										.description(description)
 										.content(content)
-										.image("data:image/png;base64,"+Base64.getEncoder().encodeToString(image.getData()))
+										.image(image!=null?"data:image/png;base64,"+Base64.getEncoder().encodeToString(image.getData()):null)
 										.profilePic(profilePic)
 										.time(time)
 										.tags(tags)
 										.likes(likes)
+										.video(video)
+										.email(email)
 										.comments(comments != null? comments.stream()
 												   .map(com -> com.entityToResponse())
 												   .collect(Collectors.toList())

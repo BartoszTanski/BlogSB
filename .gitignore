@@ -40,3 +40,4 @@ build/
 *.env.local
 *.application.properties
 */main/resources/*
+src/main/resources/application.properties
