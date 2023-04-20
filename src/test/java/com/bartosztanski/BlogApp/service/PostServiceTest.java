@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.bson.types.Binary;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

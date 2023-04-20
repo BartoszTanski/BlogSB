@@ -21,8 +21,8 @@ import com.bartosztanski.BlogApp.service.VideoService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
-@CrossOrigin(origins = {"https://bartosztanski.azurewebsites.net/","http://localhost:3000"})
-@RequestMapping("/api/v1")
+@CrossOrigin(origins = {"https://bartosztanski.azurewebsites.net/","https://bartosztanski.azurewebsites.net","http://localhost:3000"})
+@RequestMapping("/api/v1/video")
 public class VideoController {
 	
 	private final VideoService videoService;
@@ -33,19 +33,19 @@ public class VideoController {
 	
 	private final Logger LOGGER = LoggerFactory.getLogger(VideoController.class);
 	
-	@GetMapping("/video/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<VideoEntity> getVideoById(@PathVariable("id") String id) throws IllegalStateException, IOException {
 		LOGGER.info("Inside PostController.getVideoById");
 		VideoEntity video = videoService.getVideo(id);
 		return ResponseEntity.ok(video);
 	}
-	@PostMapping("/video")
+	@PostMapping("/")
 	public ResponseEntity<String> addVideo(@RequestParam("video") MultipartFile file) throws IOException {
 		LOGGER.info("Inside PostController.addVideo");
 		String id = videoService.addVideo(file);
 		return ResponseEntity.ok(id);
 	}
-	@GetMapping("/video/stream/{id}")
+	@GetMapping("/stream/{id}")
 	public void streamVideo(@PathVariable String id, HttpServletResponse response) throws Exception {
 	    VideoEntity video = videoService.getVideo(id);
 	    FileCopyUtils.copy(video.getStream(), response.getOutputStream());        
