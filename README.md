@@ -13,6 +13,8 @@
 - https://blogbartosz.azurewebsites.net/api/v1/post/{postId}/comments (GET) Returns comments to post with given id
 - https://blogbartosz.azurewebsites.net/api/v1/post/{postId}/comments (POST) Adds new comment to post with given id
 - https://blogbartosz.azurewebsites.net/api/v1/post/{postId}/{commentId} (DELETE) Deletes comment with given id from post
+- https://blogbartosz.azurewebsites.net/api/v1/video/stream/{videoId} (GET) Returns video with given id
+- https://blogbartosz.azurewebsites.net/api/v1/video/ (POST) Adds new video to DB 
 ***
 
 To perform actions other than GET use REST CLIENT ex.(Postman, Insomnia)
