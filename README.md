@@ -1,6 +1,13 @@
 # Backend with spring boot for Blog application (still in development)
 
-### This is a spring boot app that provides REST API endpoints, that enable CRUD operations on posts and comments. Backend is connected to MongoDB 
+### It is a spring boot app that provides REST API endpoints for frontend React app, it enables CRUD operations on posts and comments. Backend is connected to MongoDB database.
+
+#### Application functionalites:
+- CRUD operations on posts
+- video and image storage in database
+- streaming videos from database 
+- image compression
+- searching for posts with regex
 
 ***
 ## Frontend application is deployed on azure web services and accesible (_[here](https://bartosztanski.azurewebsites.net "bartosztanski.azurewebsites.net")_)
@@ -14,7 +21,9 @@
 - https://blogbartosz.azurewebsites.net/api/v1/post/{postId}/comments (POST) Adds new comment to post with given id
 - https://blogbartosz.azurewebsites.net/api/v1/post/{postId}/{commentId} (DELETE) Deletes comment with given id from post
 - https://blogbartosz.azurewebsites.net/api/v1/video/stream/{videoId} (GET) Returns video with given id
-- https://blogbartosz.azurewebsites.net/api/v1/video/ (POST) Adds new video to DB 
+- https://blogbartosz.azurewebsites.net/api/v1/video/ (POST) Adds new video to DB, returns video Id
+- https://blogbartosz.azurewebsites.net/api/v1/video/stream/{id} (GET) Returs video stream
+- https://blogbartosz.azurewebsites.net/api/v1/video/{id} (DELETE) Deletes video by id 
 ***
 
 To perform actions other than GET use REST CLIENT ex.(Postman, Insomnia)
