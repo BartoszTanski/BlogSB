@@ -24,7 +24,7 @@ public interface PostRepository extends MongoRepository<PostEntity, String> {
 	Optional<PostEntity> findById(String id);
 	//Find IMAGE by postID
 	@Query(value = "{'id': ?0}", fields = "{ 'image' : 1}")
-	PostEntity findImageById(String id);
+	Optional<PostEntity> findImageById(String id);
 	//Get COMMENTS by postID
 	@Query(value = "{'id': ?0}", fields = "{ 'comments' : 1}")
 	PostEntity getCommentsByPostId(String postId);

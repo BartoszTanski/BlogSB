@@ -17,7 +17,6 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	@ExceptionHandler(PostNotFoundExcepction.class)
 	public ResponseEntity<ErrorMessage> postNotPoundException(PostNotFoundExcepction postNotFoundExcepction, 
 																					WebRequest webRequest) {
-		
 		ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND,postNotFoundExcepction.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
 	}
@@ -25,8 +24,13 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	@ExceptionHandler(PostInsertFailedException.class)
 	public ResponseEntity<ErrorMessage> postNotPoundException(PostInsertFailedException postInsertFailedException, 
 																					WebRequest webRequest) {
-		
 		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST,postInsertFailedException.getMessage());
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+	}
+	@ExceptionHandler(VideoNotFoundException.class)
+	public ResponseEntity<ErrorMessage> VideoNotFoundException(VideoNotFoundException videoNotFoundException, 
+																					WebRequest webRequest) {
+		ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND,videoNotFoundException.getMessage());
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
 	}
 }

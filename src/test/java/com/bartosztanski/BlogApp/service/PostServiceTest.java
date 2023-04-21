@@ -42,7 +42,9 @@ class PostServiceTest {
 				  .tags(new String[]{"tag1","tag2","tag3"})
 				  .profilePic("test ProfilePic Url")
 				  .image(new Binary("test".getBytes()))
+				  .email("example@gmail.com")
 				  .time(LocalDateTime.of(2019, 03, 28, 14, 33))
+				  .video("6423bfcbb42e9c615a2670e9")
 				  .comments(null)
 				  .build();
 		
@@ -62,6 +64,8 @@ class PostServiceTest {
 				.profilePic("test ProfilePic Url")
 				.content("test Content")
 				.image(new Binary("test".getBytes()))
+				.email("example@gmail.com")
+				.video("6423bfcbb42e9c615a2670e9")
 				.tags(new String[]{"tag1","tag2","tag3"})
 				.time(LocalDateTime.of(2019, 03, 28, 14, 33))
 				.build();

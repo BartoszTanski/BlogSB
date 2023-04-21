@@ -1,5 +1,6 @@
 package com.bartosztanski.BlogApp.service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -38,7 +39,7 @@ public class PostServiceImpl implements PostService{
 	}
 
 	@Override
-	public String addPost(PostRequest postRequest) throws PostInsertFailedException, Exception {
+	public String addPost(PostRequest postRequest) throws PostInsertFailedException, IOException{
 		
 		PostEntity postEntity = PostEntity.builder()
 										  .title(postRequest.getTitle())
@@ -59,7 +60,7 @@ public class PostServiceImpl implements PostService{
 	}
 
 	@Override
-	public void updatePost(String id, PostRequest postRequest) {
+	public void updatePost(String id, PostRequest postRequest) throws PostNotFoundExcepction {
 
 		Query query = new Query();
 		query.addCriteria(Criteria.where("id").is(id));
@@ -76,7 +77,8 @@ public class PostServiceImpl implements PostService{
 		updateQuery.set("email", postRequest.getEmail());
 		updateQuery.set("time", postRequest.getTime());
 		
-		mongoTemplate.findAndModify(query, updateQuery, PostEntity.class);
+		if(mongoTemplate.findAndModify(query, updateQuery, PostEntity.class)==null)
+			throw new PostNotFoundExcepction("Post with id: "+id+ " not found.");
 	}
 
 	@Override
@@ -101,37 +103,42 @@ public class PostServiceImpl implements PostService{
 
 	@Override
 	public PostResponse getPostById(String id) throws PostNotFoundExcepction {
-		Optional<PostEntity> optionalPost = postRepository.findById(id);
 		
-		if(!optionalPost.isPresent()) {
-			throw new PostNotFoundExcepction("Post Not Found");
-		}
+		Optional<PostEntity> post = postRepository.findById(id);
 		
-		PostEntity post = optionalPost.get();
-		PostResponse postResponse = post.entityToResponse();
+		if(!post.isPresent()) throw new PostNotFoundExcepction("Post with id: "+id+" Not Found");
+
+		PostResponse postResponse = post.get().entityToResponse();
 		return postResponse;
 	}
 
 	@Override
-	public byte[] getImage(String id) {
-		PostEntity post = postRepository.findImageById(id);
-		byte[] image = post.getImage().getData();
+	public byte[] getImage(String id) throws PostNotFoundExcepction {
+		
+		Optional<PostEntity> post = postRepository.findImageById(id);
+		
+		if(!post.isPresent()) throw new PostNotFoundExcepction("Post with id: "+id+" Not Found");
+		
+		byte[] image = post.get().getImage().getData();
 		return image;
 	}
 
 	@Override
-	public List<PostEntity> getTopPosts(int page, int limit) {
-		LocalDateTime date = LocalDateTime.now().minusDays(7);
-		Date out = Date.from(date.atZone(ZoneId.systemDefault()).toInstant());
-		Page<PostEntity> pages = postRepository.findAllExcludeContent(out, 
+	public List<PostEntity> getTopPosts(int page, int limit, int days) {
+		
+		LocalDateTime date = LocalDateTime.now().minusDays(days);
+		Date isoDate = Date.from(date.atZone(ZoneId.systemDefault()).toInstant());
+		
+		Page<PostEntity> pages = postRepository.findAllExcludeContent(isoDate, 
                 PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "likes")));
+		
 		List<PostEntity> topPosts = pages.getContent();
 		
 		return topPosts;
 	}
 
 	@Override
-	public void updateLikes(String postId, int i) {
+	public void updateLikes(String postId, int i) throws PostNotFoundExcepction {
 		
 		Query query=new Query(Criteria.where("id").is(postId));
 		PostEntity post=mongoTemplate.findOne(query,PostEntity.class);
@@ -139,7 +146,8 @@ public class PostServiceImpl implements PostService{
 		if(post!=null){
 		   Update update=new Update().inc("likes",i);
 		   mongoTemplate.updateFirst(query,update,PostEntity.class);
-		}	    
+		}
+		else throw new PostNotFoundExcepction("Post with id: "+postId+" Not Found");
 	}
 
 	@Override

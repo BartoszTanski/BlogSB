@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bartosztanski.BlogApp.entity.VideoEntity;
+import com.bartosztanski.BlogApp.error.VideoNotFoundException;
 import com.bartosztanski.BlogApp.service.VideoService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,7 +38,7 @@ public class VideoController {
 	
 	//GET VIDEO DESCRIPTION
 	@GetMapping("/video/{id}")
-	public ResponseEntity<VideoEntity> getVideoById(@PathVariable("id") String id) throws IllegalStateException, IOException {
+	public ResponseEntity<VideoEntity> getVideoById(@PathVariable("id") String id) throws VideoNotFoundException, IllegalStateException, IOException {
 		LOGGER.info("Inside PostController.getVideoById");
 		VideoEntity video = videoService.getVideo(id);
 		return ResponseEntity.ok(video);
@@ -51,7 +52,7 @@ public class VideoController {
 	}
 	//STREAM VIDEO BY ID
 	@GetMapping("/video/stream/{id}")
-	public void streamVideo(@PathVariable String id, HttpServletResponse response) throws Exception {
+	public void streamVideo(@PathVariable String id, HttpServletResponse response) throws Exception, VideoNotFoundException {
 		LOGGER.info("Inside PostController.streamVideo");
 	    VideoEntity video = videoService.getVideo(id);
 	    FileCopyUtils.copy(video.getStream(), response.getOutputStream());        
@@ -59,7 +60,7 @@ public class VideoController {
 	//DELETE VIDEO BY ID
 	@DeleteMapping("/video/{id}")
 	public ResponseEntity<String> deleteVideo(@PathVariable("id") String id) {
-		LOGGER.info("Inside PostController.addVideo");
+		LOGGER.info("Inside PostController.deleteVideo");
 		videoService.deleteVideo(id);
 		return ResponseEntity.ok("Video deleted");
 	}

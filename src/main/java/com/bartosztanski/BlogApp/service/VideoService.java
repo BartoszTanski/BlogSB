@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bartosztanski.BlogApp.entity.VideoEntity;
+import com.bartosztanski.BlogApp.error.VideoNotFoundException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
@@ -26,8 +27,9 @@ public class VideoService {
 			this.operations = operations;
 		}
 
-	    public VideoEntity getVideo(String id) throws IllegalStateException, IOException {
+	    public VideoEntity getVideo(String id) throws IllegalStateException, IOException, VideoNotFoundException{
 	        GridFSFile file = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(id)));
+	        if(file==null) throw new VideoNotFoundException("Video with this id doesn't exist");
 	        VideoEntity video = new VideoEntity();
 	        video.setId(id);
 	        video.setStream(operations.getResource(file).getInputStream());

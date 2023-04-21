@@ -1,5 +1,6 @@
 package com.bartosztanski.BlogApp.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -12,15 +13,15 @@ import com.bartosztanski.BlogApp.model.PostResponse;
 
 @Service
 public interface PostService {
-	public String addPost(PostRequest postRequest) throws PostInsertFailedException, Exception; 
-	public void updatePost(String id, PostRequest postRequest); 
+	public String addPost(PostRequest postRequest) throws PostInsertFailedException, IOException; 
+	public void updatePost(String id, PostRequest postRequest) throws PostNotFoundExcepction; 
+	public void deleteById(String id) throws PostNotFoundExcepction;
+	public PostResponse getPostById(String id) throws PostNotFoundExcepction;
+	public byte[] getImage(String id) throws PostNotFoundExcepction; 
+	public void updateLikes(String id, int i) throws PostNotFoundExcepction;
 	public List<PostEntity> getlAllPosts();
 	public List<PostEntity> getPostsByDate(int days); 
-	public void deleteById(String id);
-	public PostResponse getPostById(String id) throws PostNotFoundExcepction;
-	public byte[] getImage(String id);
-	public List<PostEntity> getTopPosts(int page, int limit); 
-	public void updateLikes(String id, int i);
+	public List<PostEntity> getTopPosts(int page, int limit, int days);
 	public List<PostEntity> getPostsByTag(String tagId);
 	public List<PostEntity> findPostByRegexpTitle(String regexp);
 }

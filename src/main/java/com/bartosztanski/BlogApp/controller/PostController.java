@@ -51,7 +51,7 @@ public class PostController {
 			@RequestParam("tags") String tags,@RequestParam("file") MultipartFile file,
 			@RequestParam("profilePic") String profilePic,
 			@RequestParam("video") String video,
-			@RequestParam("email") String email) throws PostInsertFailedException, IOException , Exception {
+			@RequestParam("email") String email) throws PostInsertFailedException, IOException {
 		LOGGER.info("Inside PostController.addPost");
 		PostRequest postRequest = PostRequest.builder()
 											 .title(title)
@@ -77,7 +77,7 @@ public class PostController {
 			@RequestParam("tags") String tags,@RequestParam("file") Optional<MultipartFile> file,
 			@RequestParam("profilePic") String profilePic,
 			@RequestParam("video") String video,
-			@RequestParam("email") String email) throws IOException {
+			@RequestParam("email") String email) throws IOException, PostNotFoundExcepction {
 		PostRequest postRequest = PostRequest.builder()
 											 .title(title)
 											 .description(description)
@@ -110,7 +110,7 @@ public class PostController {
 	}
 	//Deleting post by ID
 	@DeleteMapping("/posts/{id}")
-	public ResponseEntity<String> deletePost(@PathVariable("id") String id) {
+	public ResponseEntity<String> deletePost(@PathVariable("id") String id) throws PostNotFoundExcepction {
 		LOGGER.info("Inside PostController.deletePost");
 		postService.deleteById(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -122,19 +122,23 @@ public class PostController {
 		PostResponse post = postService.getPostById(id);
 		return ResponseEntity.ok(post);
 	}
-	//Getting 5 posts with most likes  TODO add params to enable change of skip and limit
+	//Getting 'limit' posts with most likes in last 'range' days
 	@GetMapping("/posts/top")
-	public ResponseEntity<List<PostResponse>> getTopPosts() {
+	public ResponseEntity<List<PostResponse>> getTopPosts(@RequestParam("page") Optional<Integer> page,
+			@RequestParam("limit") Optional<Integer> limit, @RequestParam("range") Optional<Integer> range) {
+
 		LOGGER.info("Inside PostController.getTopPosts");
-		int page = 0;
-		int limit = 5; 
-		List<PostResponse> topPosts = postService.getTopPosts(page, limit)
+		int pageNumber = page.orElseGet(() -> 5);
+		int pageSize = limit.orElseGet(() -> 0);
+		int daysRange = range.orElseGet(() -> 7);
+		List<PostResponse> topPosts = postService.getTopPosts(pageNumber, pageSize, daysRange)
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
+		
 		return ResponseEntity.ok(topPosts);	
 	}
 	//Getting main image by post ID
 	@GetMapping(value="/image/{id}")
-	public ResponseEntity<byte[]> getImage(@PathVariable("id") String id) {
+	public ResponseEntity<byte[]> getImage(@PathVariable("id") String id) throws PostNotFoundExcepction {
 		LOGGER.info("Inside PostController.getImage");
 		byte[] image = postService.getImage(id);
 		return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
@@ -142,26 +146,25 @@ public class PostController {
 	//HELLO API TEST
 	@GetMapping("/hello")
 	public ResponseEntity<String> hello() {
-		
 		return ResponseEntity.ok("server status: OK");
 	}
 	//Updating post likes +1 TODO add param. instead 2 controllers
 	@PutMapping("/posts/{postId}/like")
-	public ResponseEntity<String> incrementLikes(@PathVariable("postId")String postId){
+	public ResponseEntity<String> incrementLikes(@PathVariable("postId")String postId) throws PostNotFoundExcepction {
 		LOGGER.info("Inside PostController.incrementLikes");
 		postService.updateLikes(postId,1);
 		return ResponseEntity.ok("Updated likes - incremented");
 	}
 	//Updating post likes -1 TODO add param. instead 2 controllers
 	@PutMapping("/posts/{postId}/unlike")
-	public ResponseEntity<String> decrenentLikes(@PathVariable("postId")String postId){
+	public ResponseEntity<String> decrenentLikes(@PathVariable("postId")String postId) throws PostNotFoundExcepction {
 		LOGGER.info("Inside PostController.decrenentLikes");
 		postService.updateLikes(postId,-1);
 		return ResponseEntity.ok("Updated likes - decremented");
 	}
 	//Getting posts by TAG
 	@GetMapping("/posts/tag/{tagId}")
-	public ResponseEntity<List<PostResponse>> getPostsByTag(@PathVariable("tagId") String tagId) {
+	public ResponseEntity<List<PostResponse>> getPostsByTag(@PathVariable("tagId") String tagId)  {
 		LOGGER.info("Inside PostController.getPostsByTag");
 		List<PostResponse> posts = postService.getPostsByTag(tagId)
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
