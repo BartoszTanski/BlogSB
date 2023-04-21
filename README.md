@@ -12,7 +12,7 @@
 
 ***
 # Frontend application is deployed on azure web services and accesible (_[here](https://bartosztanski.azurewebsites.net "bartosztanski.azurewebsites.net")_)
-## Backend application is also deployed on azure web services and accesible (_[here](https://blogbartosz.azurewebsites.net "blogbartosz.azurewebsites.net")_)
+## Backend application is also deployed on azure web services and accesible (_[here](https://blogbartosz.azurewebsites.net/api/v1/posts "blogbartosz.azurewebsites.net")_)
 #### Backend endpoints:
 - https://blogbartosz.azurewebsites.net/api/v1/posts (GET) Returns list of all posts in database
 - https://blogbartosz.azurewebsites.net/api/v1/posts (POST) Adds new post to database
