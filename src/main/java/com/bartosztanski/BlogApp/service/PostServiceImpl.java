@@ -71,7 +71,7 @@ public class PostServiceImpl implements PostService{
 		updateQuery.set("content", postRequest.getContent());
 		updateQuery.set("tags", postRequest.getTags());
 		if(postRequest.getImage()!=null) {updateQuery.set("image", postRequest.getImage());}
-		if(postRequest.getVideo()!=null) {updateQuery.set("video", postRequest.getVideo());}
+		if((postRequest.getVideo()!=null) && (postRequest.getVideo()!="null")) {updateQuery.set("video", postRequest.getVideo());}
 		updateQuery.set("profilePic", postRequest.getProfilePic());
 		updateQuery.set("email", postRequest.getEmail());
 		updateQuery.set("time", postRequest.getTime());
