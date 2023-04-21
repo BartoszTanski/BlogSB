@@ -90,6 +90,8 @@ class PostServiceTest {
 				  .tags(new String[]{"tag1","tag2","tag3"})
 				  .profilePic("test ProfilePic Url")
 				  .image("data:image/png;base64,dGVzdA==")
+				  .video("6423bfcbb42e9c615a2670e9")
+				  .email("example@gmail.com")
 				  .time(LocalDateTime.of(2019, 03, 28, 14, 33))
 				  .comments(null)
 				  .build();
@@ -105,7 +107,7 @@ class PostServiceTest {
 		String id ="6423bfcbb42e9c615a2670e9";
 		Exception exception = assertThrows(PostNotFoundExcepction.class, () ->
 		postService.getPostById(id));
-    assertEquals("Post Not Found", exception.getMessage());
+    assertEquals("Post with id: "+id+" Not Found", exception.getMessage());
 	}
 
 }
