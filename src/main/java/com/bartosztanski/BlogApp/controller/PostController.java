@@ -128,8 +128,8 @@ public class PostController {
 			@RequestParam("limit") Optional<Integer> limit, @RequestParam("range") Optional<Integer> range) {
 
 		LOGGER.info("Inside PostController.getTopPosts");
-		int pageNumber = page.orElseGet(() -> 5);
-		int pageSize = limit.orElseGet(() -> 0);
+		int pageNumber = page.orElseGet(() -> 0);
+		int pageSize = limit.orElseGet(() -> 5);
 		int daysRange = range.orElseGet(() -> 7);
 		List<PostResponse> topPosts = postService.getTopPosts(pageNumber, pageSize, daysRange)
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
