@@ -28,3 +28,39 @@
 ***
 
 To perform actions other than GET use REST CLIENT ex.(Postman, Insomnia)
+
+## UI - screenshots
+
+## Home
+
+![Home](screenshots/mainpage.png)
+
+### Post
+
+![Post](screenshots/posts1.png)
+![Post](screenshots/post2.png)
+
+### Search
+
+![Search](screenshots/search.png)
+
+### Adding post
+
+![Adding post](screenshots/addingPost.png)
+
+### Editing/deleting post
+
+![Edit/Delete](screenshots/Editing-deleting.png)
+
+### Editing
+
+![Editing](screenshots/Editing.png)
+
+### Deleting
+
+![Deleting](screenshots/Deleting.png)
+
+
+### Adding Comments
+
+![Comments](screenshots/comment.png)
