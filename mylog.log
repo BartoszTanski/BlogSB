@@ -1,0 +1,33 @@
+1162 [main] INFO  c.b.BlogApp.BlogAppApplication - Starting BlogAppApplication using Java 17.0.5 with PID 1268 (C:\REPOZYTORIA_GIT\BlogAppSB\BlogApp\target\classes started by bt4ns in C:\REPOZYTORIA_GIT\BlogAppSB\BlogApp)
+1166 [main] INFO  c.b.BlogApp.BlogAppApplication - The following 1 profile is active: "${ACTIVE_PROFILE}"
+2698 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data MongoDB repositories in DEFAULT mode.
+2929 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 224 ms. Found 2 MongoDB repository interfaces.
+3478 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
+3489 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
+3490 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+3491 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.7]
+3670 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+3672 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2419 ms
+4060 [main] INFO  org.mongodb.driver.client - MongoClient with metadata {"driver": {"name": "mongo-java-driver|sync|spring-boot", "version": "4.8.2"}, "os": {"type": "Windows", "name": "Windows 10", "architecture": "amd64", "version": "10.0"}, "platform": "Java/Eclipse Adoptium/17.0.5+8"} created with settings MongoClientSettings{readPreference=primary, writeConcern=WriteConcern{w=null, wTimeout=null ms, journal=null}, retryWrites=true, retryReads=true, readConcern=ReadConcern{level=null}, credential=null, streamFactoryFactory=null, commandListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsCommandListener@641ed324], codecRegistry=ProvidersCodecRegistry{codecProviders=[ValueCodecProvider{}, BsonValueCodecProvider{}, DBRefCodecProvider{}, DBObjectCodecProvider{}, DocumentCodecProvider{}, CollectionCodecProvider{}, IterableCodecProvider{}, MapCodecProvider{}, GeoJsonCodecProvider{}, GridFSFileCodecProvider{}, Jsr310CodecProvider{}, JsonObjectCodecProvider{}, BsonCodecProvider{}, EnumCodecProvider{}, com.mongodb.Jep395RecordCodecProvider@45984654]}, clusterSettings={hosts=[localhost:27017], srvServiceName=mongodb, mode=SINGLE, requiredClusterType=UNKNOWN, requiredReplicaSetName='null', serverSelector='null', clusterListeners='[]', serverSelectionTimeout='30000 ms', localThreshold='30000 ms'}, socketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=0, receiveBufferSize=0, sendBufferSize=0}, heartbeatSocketSettings=SocketSettings{connectTimeoutMS=10000, readTimeoutMS=10000, receiveBufferSize=0, sendBufferSize=0}, connectionPoolSettings=ConnectionPoolSettings{maxSize=100, minSize=0, maxWaitTimeMS=120000, maxConnectionLifeTimeMS=0, maxConnectionIdleTimeMS=0, maintenanceInitialDelayMS=0, maintenanceFrequencyMS=60000, connectionPoolListeners=[io.micrometer.core.instrument.binder.mongodb.MongoMetricsConnectionPoolListener@4c5406b], maxConnecting=2}, serverSettings=ServerSettings{heartbeatFrequencyMS=10000, minHeartbeatFrequencyMS=500, serverListeners='[]', serverMonitorListeners='[]'}, sslSettings=SslSettings{enabled=false, invalidHostNameAllowed=false, context=null}, applicationName='null', compressorList=[], uuidRepresentation=JAVA_LEGACY, serverApi=null, autoEncryptionSettings=null, contextProvider=null}
+4099 [cluster-ClusterId{value='6523a81997b7dd442d5a80f7', description='null'}-localhost:27017] INFO  org.mongodb.driver.cluster - Monitor thread successfully connected to server with description ServerDescription{address=localhost:27017, type=STANDALONE, state=CONNECTED, ok=true, minWireVersion=0, maxWireVersion=17, maxDocumentSize=16777216, logicalSessionTimeoutMinutes=30, roundTripTimeNanos=29731400}
+5154 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 14 endpoint(s) beneath base path '/actuator'
+5202 [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
+5229 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
+5245 [main] INFO  c.b.BlogApp.BlogAppApplication - Started BlogAppApplication in 4.736 seconds (process running for 5.615)
+11307 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+11308 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+11310 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+11375 [http-nio-8080-exec-2] INFO  c.b.B.controller.PostController - Inside PostController.getTopPosts
+11375 [http-nio-8080-exec-3] INFO  c.b.B.controller.PostPageController - Inside PostPageController.getAllPosts page:1
+11375 [http-nio-8080-exec-1] INFO  c.b.B.controller.PostPageController - Inside PostPageController.getAllPosts page:0
+11640 [http-nio-8080-exec-5] INFO  c.b.B.controller.PostController - Inside PostController.getTopPosts
+11646 [http-nio-8080-exec-4] INFO  c.b.B.controller.PostPageController - Inside PostPageController.getAllPosts page:0
+16086 [http-nio-8080-exec-6] INFO  c.b.B.controller.PostPageController - Inside PostPageController.getAllPosts page:2
+16926 [http-nio-8080-exec-7] INFO  c.b.B.controller.PostPageController - Inside PostPageController.getAllPosts page:3
+17790 [http-nio-8080-exec-8] INFO  c.b.B.controller.PostPageController - Inside PostPageController.getAllPosts page:4
+19410 [http-nio-8080-exec-9] INFO  c.b.B.controller.PostPageController - Inside PostPageController.getAllPosts page:5
+20807 [http-nio-8080-exec-10] INFO  c.b.B.controller.PostPageController - Inside PostPageController.getAllPosts page:6
+22126 [http-nio-8080-exec-1] INFO  c.b.B.controller.PostPageController - Inside PostPageController.getAllPosts page:7
+25723 [http-nio-8080-exec-4] INFO  c.b.B.controller.PostPageController - Inside PostPageController.getAllPosts page:8
+26220 [http-nio-8080-exec-3] INFO  c.b.B.controller.PostPageController - Inside PostPageController.getAllPosts page:9
+80695 [http-nio-8080-exec-9] INFO  c.b.B.controller.PostController - Inside PostController.getPostsByTitleRegex

@@ -35,9 +35,11 @@ public interface PostRepository extends MongoRepository<PostEntity, String> {
 	@Query(value = "{'tags': ?0}",fields = "{'comments' : 0, 'content' : 0}")
 	List<PostEntity> findAllByTag(String tagId, Sort sort);
 	//Find POSTS by TITLE REGEX
-	@Query(value="{ 'title' : { $regex: ?0 } }",fields = "{'comments' : 0, 'content' : 0, 'author' : 0, 'profilePic' : 0, 'description' :0}")
+	@Query(value="{ 'title' : { $regex: ?0, $options: 'i'} }",fields = "{'comments' : 0, 'content' : 0, 'profilePic' : 0,}")
 	List<PostEntity> findPostByRegexpTitle(String regexp);
 	//Find all POSTS 
 	@Query(value = "{}",fields = "{}")
 	List<PostEntity> getAllPosts(Sort sort);
+
+	Page<PostEntity> findAll(Pageable pageable);
 }

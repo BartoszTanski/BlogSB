@@ -9,6 +9,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -21,6 +22,7 @@ import com.bartosztanski.BlogApp.error.PostInsertFailedException;
 import com.bartosztanski.BlogApp.error.PostNotFoundExcepction;
 import com.bartosztanski.BlogApp.model.PostRequest;
 import com.bartosztanski.BlogApp.model.PostResponse;
+import com.bartosztanski.BlogApp.model.PostsPage;
 import com.bartosztanski.BlogApp.repository.PostRepository;
 import com.bartosztanski.BlogApp.utils.ImageResizeService;
 
@@ -160,6 +162,19 @@ public class PostServiceImpl implements PostService{
 	public List<PostEntity> findPostByRegexpTitle(String regexp) {
 		List<PostEntity> posts = postRepository.findPostByRegexpTitle(regexp);
 		return posts;
+	}
+
+	@Override
+	public PostsPage getlAllPostsByPage(int lp) {
+		Pageable pageable = PageRequest.of(lp, 2, Sort.by("time").descending());
+		Page<PostEntity> pages = postRepository.findAll(pageable);
+		List<PostEntity> posts = pages.getContent();
+		int size = pages.getTotalPages();
+		PostsPage page = PostsPage.builder()
+				.posts(posts)
+				.size(size)
+				.build();
+		return page;
 	}
 	
 	

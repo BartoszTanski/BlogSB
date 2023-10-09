@@ -16,14 +16,14 @@ import net.coobird.thumbnailator.Thumbnails;
 public class ImageResizeService {
 	public Binary resizeImage(Binary inputBinary, int targetWidth, int targetHeight) throws IOException {
 		//If image size less than 0,5 MB return without compressing
-		if (inputBinary.length()<500000) return inputBinary;
+		if (inputBinary.length()<524288) return inputBinary;
 		InputStream is = new ByteArrayInputStream(inputBinary.getData());
 		BufferedImage bi = ImageIO.read(is);
 	    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 	    Thumbnails.of(bi)
 	        .size(targetWidth, targetHeight)
 	        .outputFormat("JPEG")
-	        .outputQuality(1)
+	        .outputQuality(0.95)
 	        .toOutputStream(outputStream);
 	    Binary outputBinary = new Binary(outputStream.toByteArray());
 	    return outputBinary;

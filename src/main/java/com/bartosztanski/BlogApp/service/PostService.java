@@ -10,6 +10,7 @@ import com.bartosztanski.BlogApp.error.PostInsertFailedException;
 import com.bartosztanski.BlogApp.error.PostNotFoundExcepction;
 import com.bartosztanski.BlogApp.model.PostRequest;
 import com.bartosztanski.BlogApp.model.PostResponse;
+import com.bartosztanski.BlogApp.model.PostsPage;
 
 @Service
 public interface PostService {
@@ -24,4 +25,5 @@ public interface PostService {
 	public List<PostEntity> getTopPosts(int page, int limit, int days);
 	public List<PostEntity> getPostsByTag(String tagId);
 	public List<PostEntity> findPostByRegexpTitle(String regexp);
+	public PostsPage getlAllPostsByPage(int lp);
 }
