@@ -12,7 +12,7 @@
 	<artifactId>BlogApp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>BlogApp</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Backend for frontend blog app</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
@@ -39,6 +39,10 @@
 		<dependency>
     		<groupId>org.springframework.boot</groupId>
    			<artifactId>spring-boot-starter-webflux</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency>
     		<groupId>net.coobird</groupId>
