@@ -39,5 +39,5 @@ build/
 */main/resources/application.yaml
 *.env.local
 *.application.properties
-*/main/resources/*
 src/main/resources/application.properties
+application.properties
