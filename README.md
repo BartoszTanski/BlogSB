@@ -10,11 +10,10 @@
 - searching for posts by title(regex) and by tag
 - sorting posts and pagination
 
-***
-# Frontend application is deployed on azure web services and accesible (_[here](https://bartosztanski.azurewebsites.net "bartosztanski.azurewebsites.net")_)
-## Backend application is also deployed on azure web services and accesible (_[here](https://blogbartosz.azurewebsites.net/ "blogbartosz.azurewebsites.net")_)
+#### Frontend application is deployed on azure web services and accesible (_[here](https://bartosztanski.azurewebsites.net "bartosztanski.azurewebsites.net")_)
+#### Backend application is also deployed on azure web services and accesible (_[here](https://blogbartosz.azurewebsites.net/ "blogbartosz.azurewebsites.net")_), endpoints list at the bottom of README
 
-## UI - screenshots
+# UI - screenshots
 
 ## Home 
 [ Link](https://bartosztanski.azurewebsites.net)
