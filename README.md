@@ -31,36 +31,37 @@ To perform actions other than GET use REST CLIENT ex.(Postman, Insomnia)
 
 ## UI - screenshots
 
-## Home
+## Home 
+[ Link](https://bartosztanski.azurewebsites.net)
 
-![Home](screenshots/mainpage.png)
+![Home](screenshots/MainPage.PNG)
 
 ### Post
-
-![Post](screenshots/posts1.png)
-![Post](screenshots/post2.png)
+[ Link](https://bartosztanski.azurewebsites.net/posts/6523bc7072bf6b63d22092e8?postIndex=0)
+![Post](screenshots/Posts1.PNG)
+![Post](screenshots/Post2.PNG)
 
 ### Search
-
-![Search](screenshots/search.png)
+[ Link](https://bartosztanski.azurewebsites.net)
+![Search](screenshots/Search.PNG)
 
 ### Adding post
-
-![Adding post](screenshots/addingPost.png)
+[ Link](https://bartosztanski.azurewebsites.net/posts/createPost)
+![Adding post](screenshots/AddingPost.PNG)
 
 ### Editing/deleting post
-
-![Edit/Delete](screenshots/Editing-deleting.png)
+[_Link - authorization needed](https://bartosztanski.azurewebsites.net/posts/6501fadf13f41a7dc052d57a)
+![Edit/Delete](screenshots/Editing-deleting.PNG)
 
 ### Editing
-
-![Editing](screenshots/Editing.png)
+[_Link - authorization needed](https://bartosztanski.azurewebsites.net/posts/edit/6501fadf13f41a7dc052d57a)
+![Editing](screenshots/Editing.PNG)
 
 ### Deleting
-
-![Deleting](screenshots/Deleting.png)
+[_Link - authorization needed](https://bartosztanski.azurewebsites.net/posts/6501fadf13f41a7dc052d57a)
+![Deleting](screenshots/Deleting.PNG)
 
 
 ### Adding Comments
-
-![Comments](screenshots/comment.png)
+[ Link](https://bartosztanski.azurewebsites.net/posts/6523bc7072bf6b63d22092e8?postIndex=0)
+![Comments](screenshots/Comment.PNG)
