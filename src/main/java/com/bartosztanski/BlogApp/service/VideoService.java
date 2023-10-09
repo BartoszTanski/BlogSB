@@ -1,6 +1,9 @@
 package com.bartosztanski.BlogApp.service;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -12,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.bartosztanski.BlogApp.entity.VideoEntity;
 import com.bartosztanski.BlogApp.error.VideoNotFoundException;
+import com.bartosztanski.BlogApp.repository.VideoFilesRepository;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.client.gridfs.model.GridFSFile;
@@ -19,12 +23,15 @@ import com.mongodb.client.gridfs.model.GridFSFile;
 @Service
 public class VideoService {
 
-	    private GridFsTemplate gridFsTemplate;
-	    private GridFsOperations operations;
+	    private final GridFsTemplate gridFsTemplate;
+	    private final GridFsOperations operations;
+	    private final VideoFilesRepository videoFilesRepository;
 	    
-	    public VideoService(GridFsTemplate gridFsTemplate,GridFsOperations operations) {
+	    public VideoService(GridFsTemplate gridFsTemplate,GridFsOperations operations,
+	    		VideoFilesRepository videoFilesRepository) {
 			this.gridFsTemplate = gridFsTemplate;
 			this.operations = operations;
+			this.videoFilesRepository = videoFilesRepository;
 		}
 
 	    public VideoEntity getVideo(String id) throws IllegalStateException, IOException, VideoNotFoundException{
@@ -45,5 +52,12 @@ public class VideoService {
 
 		public void deleteVideo(String id) {
 			gridFsTemplate.delete(new Query(Criteria.where("_id").is(id)));
+		}
+		
+		public List<String> getAllVideos() {
+			List<String> videos= new LinkedList<String>();
+			videos = videoFilesRepository.findAll().stream()
+					.map(videoData -> videoData.getId()).collect(Collectors.toList());
+			return videos;
 		}
 }

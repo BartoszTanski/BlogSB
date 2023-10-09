@@ -1,6 +1,8 @@
 package com.bartosztanski.BlogApp.controller;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,4 +66,19 @@ public class VideoController {
 		videoService.deleteVideo(id);
 		return ResponseEntity.ok("Video deleted");
 	}
+	//GET ALL VIDEOS ID'S
+	@GetMapping("/videos/")
+	public ResponseEntity<List<String>> getListOfAllVideos() {
+		LOGGER.info("Inside PostController.getListOfAllVideos");
+		List<String> videos = new LinkedList<>();
+		videos = videoService.getAllVideos();
+		return ResponseEntity.ok(videos);
+	}
 }
+
+
+
+
+
+
+
