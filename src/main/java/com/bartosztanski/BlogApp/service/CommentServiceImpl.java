@@ -21,20 +21,23 @@ public class CommentServiceImpl implements CommentService {
 	MongoTemplate mongoTemplate;
 	
 	public CommentServiceImpl(PostRepository postRepository, MongoTemplate mongoTemplate) {
+		
 		this.postRepository = postRepository;
 		this.mongoTemplate = mongoTemplate;
 	}
 	
 	@Override
 	public String addComment(CommentRequest commentRequest) {
+		
 		String postId = commentRequest.getPostId();
-		CommentEntity commentEntity = CommentEntity.builder()
-												   .id()
-												   .author(commentRequest.getAuthor())
-												   .content(commentRequest.getContent())
-												   .profilePic(commentRequest.getProfilePic())
-												   .time(LocalDateTime.now())
-												   .build();
+		CommentEntity commentEntity = 
+				CommentEntity.builder()
+					.id()
+					.author(commentRequest.getAuthor())
+					.content(commentRequest.getContent())
+					.profilePic(commentRequest.getProfilePic())
+				    .time(LocalDateTime.now())
+				.build();
 
 		Query query = new Query();
 		query.addCriteria(Criteria.where("id").is(postId));
@@ -53,8 +56,14 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void deleteComment(String postId, String commentId) {
 		
-		List<CommentEntity> commentEntityList = postRepository.getCommentsByPostId(postId).getComments();
-		commentEntityList = commentEntityList.stream().filter(c ->!c.getId().equals(commentId)).toList();
+		List<CommentEntity> commentEntityList = postRepository.
+				getCommentsByPostId(postId).
+				getComments();
+		
+		commentEntityList = commentEntityList.stream()
+				.filter(c ->!c.getId().equals(commentId))
+				.toList();
+		
 		Query query = new Query();
 		query.addCriteria(Criteria.where("id").is(postId));
 		Update updateQuery = new Update(); 

@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PostsPage {
+	
 	private List<PostEntity> posts;
 	private int size;
 }

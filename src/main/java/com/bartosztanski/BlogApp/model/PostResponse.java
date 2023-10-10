@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PostResponse {
+	
 	private String id;
 	private String title;
 	private String description;

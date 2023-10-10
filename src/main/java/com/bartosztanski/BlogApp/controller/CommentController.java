@@ -31,9 +31,13 @@ public class CommentController {
 	private final Logger LOGGER = LoggerFactory.getLogger(CommentController.class);
 
 	@PostMapping("/{postId}/comments")
-	public ResponseEntity<String> addComment(@PathVariable("postId") String postId, @RequestParam("author") String author,
-			@RequestParam("content") String content, @RequestParam("profilePic") String profilePic) throws IOException {
+	public ResponseEntity<String> addComment(@PathVariable("postId") String postId,
+			@RequestParam("author") String author,
+			@RequestParam("content") String content, 
+			@RequestParam("profilePic") String profilePic) throws IOException {
+		
 		LOGGER.info("Inside CommentController.addComment");
+		
 		CommentRequest commentRequest = CommentRequest.builder()
 													  .author(author)
 													  .content(content)
@@ -44,9 +48,12 @@ public class CommentController {
 		String id = commentService.addComment(commentRequest);
 		return new ResponseEntity<>(id+" succesfully ", HttpStatus.CREATED);
 	}
+	
 	@DeleteMapping("/{postId}/{commentId}")
 	public ResponseEntity<String> deleteComment(@PathVariable("postId") String postId,@PathVariable("commentId") String commentId) {
+		
 		LOGGER.info("Inside CommentController.deleteComment");
+		
 		commentService.deleteComment(postId, commentId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}

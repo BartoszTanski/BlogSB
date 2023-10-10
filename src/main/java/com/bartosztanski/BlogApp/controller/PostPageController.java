@@ -30,18 +30,22 @@ public class PostPageController {
 		
 		private final Logger LOGGER = LoggerFactory.getLogger(PostPageController.class); 
 		
-		//Getting all posts one by one
 		@GetMapping("/posts/page/{lp}")
 		public ResponseEntity<PostsPageResponse> getlAllPostsByPage(@PathVariable("lp")int lp) {
+			
 			LOGGER.info("Inside PostPageController.getAllPosts page:{}",lp);
 			PostsPage page = postService.getlAllPostsByPage(lp);
+			
 			List<PostResponse> posts = page.getPosts()
-					.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
+					.stream()
+					.map(e -> e.entityToResponse())
+					.collect(Collectors.toList());
 			
 			PostsPageResponse pageResponse = PostsPageResponse.builder()
 					.posts(posts)
 					.size(page.getSize())
 					.build();
+			
 			return ResponseEntity.ok().body(pageResponse);
 		}
 }

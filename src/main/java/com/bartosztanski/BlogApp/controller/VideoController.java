@@ -38,37 +38,50 @@ public class VideoController {
 	
 	private final Logger LOGGER = LoggerFactory.getLogger(VideoController.class);
 	
-	//GET VIDEO DESCRIPTION
+	//GET VIDEO DETAILS
 	@GetMapping("/video/{id}")
-	public ResponseEntity<VideoEntity> getVideoById(@PathVariable("id") String id) throws VideoNotFoundException, IllegalStateException, IOException {
+	public ResponseEntity<VideoEntity> getVideoById(
+			@PathVariable("id") String id)
+			throws VideoNotFoundException, IllegalStateException, IOException {
+		
 		LOGGER.info("Inside PostController.getVideoById");
 		VideoEntity video = videoService.getVideo(id);
 		return ResponseEntity.ok(video);
 	}
+	
 	//ADD VIDEO
 	@PostMapping("/video")
-	public ResponseEntity<String> addVideo(@RequestParam("video") MultipartFile file) throws IOException {
+	public ResponseEntity<String> addVideo(
+			@RequestParam("video") MultipartFile file) throws IOException {
+		
 		LOGGER.info("Inside PostController.addVideo");
 		String id = videoService.addVideo(file);
 		return ResponseEntity.ok(id);
 	}
+	
 	//STREAM VIDEO BY ID
 	@GetMapping("/video/stream/{id}")
-	public void streamVideo(@PathVariable String id, HttpServletResponse response) throws Exception, VideoNotFoundException {
+	public void streamVideo(@PathVariable String id,
+			HttpServletResponse response) throws Exception, VideoNotFoundException {
+		
 		LOGGER.info("Inside PostController.streamVideo");
 	    VideoEntity video = videoService.getVideo(id);
 	    FileCopyUtils.copy(video.getStream(), response.getOutputStream());        
 	}
+	
 	//DELETE VIDEO BY ID
 	@DeleteMapping("/video/{id}")
 	public ResponseEntity<String> deleteVideo(@PathVariable("id") String id) {
+		
 		LOGGER.info("Inside PostController.deleteVideo");
 		videoService.deleteVideo(id);
 		return ResponseEntity.ok("Video deleted");
 	}
+	
 	//GET ALL VIDEOS ID'S
 	@GetMapping("/videos/")
 	public ResponseEntity<List<String>> getListOfAllVideos() {
+		
 		LOGGER.info("Inside PostController.getListOfAllVideos");
 		List<String> videos = new LinkedList<>();
 		videos = videoService.getAllVideos();

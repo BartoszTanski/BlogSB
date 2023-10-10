@@ -16,28 +16,30 @@ import com.bartosztanski.BlogApp.entity.PostEntity;
 @Repository
 public interface PostRepository extends MongoRepository<PostEntity, String> {
 	
-	//Find POSTS newer than TIME
+
 	@Query(value="{'time' : { $gt : ?0} }")
 	Optional<List<PostEntity>> findByDate(Date date);
-	//Find POST by postID
+
 	@Query("{'id': ?0}")
 	Optional<PostEntity> findById(String id);
-	//Find IMAGE by postID
+
 	@Query(value = "{'id': ?0}", fields = "{ 'image' : 1}")
 	Optional<PostEntity> findImageById(String id);
-	//Get COMMENTS by postID
+
 	@Query(value = "{'id': ?0}", fields = "{ 'comments' : 1}")
 	PostEntity getCommentsByPostId(String postId);
-	//Find all POSTS without some fields
-	@Query(value = "{'time' : { $gt : ?0} }",fields = "{'comments' : 0, 'content' : 0, 'author' : 0, 'profilePic' : 0, 'description' :0}")
+
+	@Query(value = "{'time' : { $gt : ?0} }",
+			fields = "{'comments' : 0, 'content' : 0, 'author' : 0, 'profilePic' : 0, 'description' :0}")
 	Page<PostEntity> findAllExcludeContent(Date date,Pageable pageable);
-	//Find POSTS by TAG
+
 	@Query(value = "{'tags': ?0}",fields = "{'comments' : 0, 'content' : 0}")
 	List<PostEntity> findAllByTag(String tagId, Sort sort);
-	//Find POSTS by TITLE REGEX
-	@Query(value="{ 'title' : { $regex: ?0, $options: 'i'} }",fields = "{'comments' : 0, 'content' : 0, 'profilePic' : 0,}")
+
+	@Query(value="{ 'title' : { $regex: ?0, $options: 'i'} }",
+			fields = "{'comments' : 0, 'content' : 0, 'profilePic' : 0,}")
 	List<PostEntity> findPostByRegexpTitle(String regexp);
-	//Find all POSTS 
+
 	@Query(value = "{}",fields = "{}")
 	List<PostEntity> getAllPosts(Sort sort);
 

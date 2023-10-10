@@ -14,8 +14,13 @@ import com.bartosztanski.BlogApp.model.PostsPage;
 
 @Service
 public interface PostService {
-	public String addPost(PostRequest postRequest) throws PostInsertFailedException, IOException; 
-	public void updatePost(String id, PostRequest postRequest) throws PostNotFoundExcepction; 
+	
+	public String addPost(PostRequest postRequest) 
+			throws PostInsertFailedException, IOException; 
+	
+	public void updatePost(String id, PostRequest postRequest)
+			throws PostNotFoundExcepction; 
+	
 	public void deleteById(String id) throws PostNotFoundExcepction;
 	public PostResponse getPostById(String id) throws PostNotFoundExcepction;
 	public byte[] getImage(String id) throws PostNotFoundExcepction; 

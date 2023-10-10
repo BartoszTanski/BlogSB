@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CommentEntity {
+	
 	@Id
 	private String id;
 	private String author;
@@ -26,7 +27,8 @@ public class CommentEntity {
 
 
 	public static class CommentEntityBuilder {
-		public CommentEntityBuilder id() {
+		
+		public CommentEntityBuilder id() {	
 			this.id = new ObjectId().toString();
 			return this;
 		}
@@ -40,6 +42,7 @@ public class CommentEntity {
 										.profilePic(profilePic)
 										.time(time)
 										.build();
+		
 		return commentResponse;
 	}
 }

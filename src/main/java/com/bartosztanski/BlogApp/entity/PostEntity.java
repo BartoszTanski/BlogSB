@@ -22,6 +22,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Document(collection = "posts")
 public class PostEntity {
+	
 	@Id
 	private String id;
 	private String title;
@@ -30,7 +31,7 @@ public class PostEntity {
 	private LocalDateTime time;
 	private String author;
 	private String profilePic;
-	private Binary image; //BSON Mongodb type
+	private Binary image; 
 	private String[] tags;
 	private String video;
 	private String email;
@@ -38,24 +39,29 @@ public class PostEntity {
 	private int likes;
 	
 	public PostResponse entityToResponse() {
+		
 		PostResponse postResponse = PostResponse.builder()
-										.id(id)
-										.title(title)
-										.author(author)
-										.description(description)
-										.content(content)
-										.image(image!=null?"data:image/png;base64,"+Base64.getEncoder().encodeToString(image.getData()):null)
-										.profilePic(profilePic)
-										.time(time)
-										.tags(tags)
-										.likes(likes)
-										.video(video)
-										.email(email)
-										.comments(comments != null? comments.stream()
-												   .map(com -> com.entityToResponse())
-												   .collect(Collectors.toList())
-													:null)
-										.build();
+					.id(id)
+					.title(title)
+					.author(author)
+					.description(description)
+					.content(content)
+					.image(image!=null?"data:image/png;base64,"+Base64
+										.getEncoder()
+										.encodeToString(image.getData())
+							:null)
+					.profilePic(profilePic)
+					.time(time)
+					.tags(tags)
+					.likes(likes)
+					.video(video)
+					.email(email)
+					.comments(comments != null? comments.stream()
+									.map(com -> com.entityToResponse())
+									.collect(Collectors.toList())
+							 :null)
+					.build();
+		
 		return postResponse;
 	}
 }

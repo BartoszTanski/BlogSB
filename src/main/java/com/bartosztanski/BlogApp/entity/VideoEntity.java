@@ -21,6 +21,7 @@ public class VideoEntity {
 
 
 	public static class VideoEntityBuilder {
+		
 		public VideoEntityBuilder id() {
 			this.id = new ObjectId().toString();
 			return this;

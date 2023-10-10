@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CommentResponse {
+	
 	private String id;
 	private String author;
 	private String profilePic; 

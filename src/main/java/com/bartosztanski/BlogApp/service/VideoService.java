@@ -27,15 +27,21 @@ public class VideoService {
 	    private final GridFsOperations operations;
 	    private final VideoFilesRepository videoFilesRepository;
 	    
-	    public VideoService(GridFsTemplate gridFsTemplate,GridFsOperations operations,
-	    		VideoFilesRepository videoFilesRepository) {
+	    public VideoService(GridFsTemplate gridFsTemplate,
+				    		GridFsOperations operations,
+				    		VideoFilesRepository videoFilesRepository) {
+	    	
 			this.gridFsTemplate = gridFsTemplate;
 			this.operations = operations;
 			this.videoFilesRepository = videoFilesRepository;
 		}
 
-	    public VideoEntity getVideo(String id) throws IllegalStateException, IOException, VideoNotFoundException{
-	        GridFSFile file = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(id)));
+	    public VideoEntity getVideo(String id)
+	    		throws IllegalStateException, IOException, VideoNotFoundException{
+	    	
+	        GridFSFile file = gridFsTemplate.findOne(new Query(
+	        		Criteria.where("_id").is(id)));
+	        
 	        if(file==null) throw new VideoNotFoundException("Video with this id doesn't exist");
 	        VideoEntity video = new VideoEntity();
 	        video.setId(id);
@@ -44,9 +50,15 @@ public class VideoService {
 	    }
 
 	    public String addVideo(MultipartFile file) throws IOException {
+	    	
 	        DBObject metaData = new BasicDBObject();
 	        metaData.put("type", "video");
-	        ObjectId id = gridFsTemplate.store(file.getInputStream(), file.getName(), file.getContentType(), metaData);
+	        ObjectId id = gridFsTemplate.store(
+	        		file.getInputStream(),
+	        		file.getName(),
+	        		file.getContentType(),
+	        		metaData);
+	        
 	        return id.toString();
 	    }
 
@@ -55,9 +67,13 @@ public class VideoService {
 		}
 		
 		public List<String> getAllVideos() {
+			
 			List<String> videos= new LinkedList<String>();
-			videos = videoFilesRepository.findAll().stream()
-					.map(videoData -> videoData.getId()).collect(Collectors.toList());
+			videos = videoFilesRepository.findAll()
+					.stream()
+					.map(videoData -> videoData.getId())
+					.collect(Collectors.toList());
+			
 			return videos;
 		}
 }

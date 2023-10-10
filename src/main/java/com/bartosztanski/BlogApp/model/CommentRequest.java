@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class CommentRequest {
+	
 	private String author;
 	private String profilePic;
 	private String content;
