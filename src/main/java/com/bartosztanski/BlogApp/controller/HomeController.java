@@ -18,10 +18,10 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public ModelAndView home() {
-		LOGGER.info("Inside HomeController.htmlTest");
 		
 	    ModelAndView modelAndView = new ModelAndView();
 	    modelAndView.setViewName("test.html");
+	    LOGGER.info("Returned test.html page");
 	    return modelAndView;
 	}
 	

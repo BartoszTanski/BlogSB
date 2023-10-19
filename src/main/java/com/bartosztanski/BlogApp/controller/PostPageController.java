@@ -35,7 +35,6 @@ public class PostPageController {
 		@GetMapping("/posts/page/{lp}")
 		public ResponseEntity<PostsPageResponse> getlAllPostsByPage(@PathVariable("lp")int lp) {
 			
-			LOGGER.info("Inside PostPageController.getAllPosts page:{}",lp);
 			PostsPage page = postService.getlAllPostsByPage(lp);
 			
 			List<PostResponse> posts = page.getPosts()
@@ -51,6 +50,7 @@ public class PostPageController {
 			CacheControl cacheControl = CacheControl.maxAge(120, TimeUnit.SECONDS)
 				      .noTransform();
 			
+			LOGGER.info("Returned "+posts.size()+" posts by page where page: "+lp);
 			return ResponseEntity.ok().cacheControl(cacheControl).body(pageResponse);
 		}
 }

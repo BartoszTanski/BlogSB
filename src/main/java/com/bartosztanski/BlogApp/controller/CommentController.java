@@ -1,6 +1,7 @@
 package com.bartosztanski.BlogApp.controller;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +32,11 @@ public class CommentController {
 	private final Logger LOGGER = LoggerFactory.getLogger(CommentController.class);
 
 	@PostMapping("/{postId}/comments")
-	public ResponseEntity<String> addComment(@PathVariable("postId") String postId,
+	public ResponseEntity<LocalDateTime> addComment(@PathVariable("postId") String postId,
 			@RequestParam("author") String author,
 			@RequestParam("content") String content, 
 			@RequestParam("profilePic") String profilePic) throws IOException {
 		
-		LOGGER.info("Inside CommentController.addComment");
 		
 		CommentRequest commentRequest = CommentRequest.builder()
 													  .author(author)
@@ -45,16 +45,16 @@ public class CommentController {
 													  .profilePic(profilePic)
 													  .build();
 
-		String id = commentService.addComment(commentRequest);
-		return new ResponseEntity<>(id+" succesfully ", HttpStatus.CREATED);
+		LocalDateTime creationTime = commentService.addComment(commentRequest);
+		LOGGER.info("Added new comment to post "+postId+", created: "+creationTime);
+		return new ResponseEntity<>(creationTime, HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/{postId}/{commentId}")
 	public ResponseEntity<String> deleteComment(@PathVariable("postId") String postId,@PathVariable("commentId") String commentId) {
 		
-		LOGGER.info("Inside CommentController.deleteComment");
-		
 		commentService.deleteComment(postId, commentId);
+		LOGGER.info("Deleted comment from post "+postId+", comment id: "+commentId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 }

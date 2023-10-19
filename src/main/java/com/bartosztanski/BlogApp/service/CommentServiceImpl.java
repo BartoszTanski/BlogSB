@@ -27,16 +27,17 @@ public class CommentServiceImpl implements CommentService {
 	}
 	
 	@Override
-	public String addComment(CommentRequest commentRequest) {
+	public LocalDateTime addComment(CommentRequest commentRequest) {
 		
 		String postId = commentRequest.getPostId();
+		LocalDateTime dateTime = LocalDateTime.now();
 		CommentEntity commentEntity = 
 				CommentEntity.builder()
 					.id()
 					.author(commentRequest.getAuthor())
 					.content(commentRequest.getContent())
 					.profilePic(commentRequest.getProfilePic())
-				    .time(LocalDateTime.now())
+				    .time(dateTime)
 				.build();
 
 		Query query = new Query();
@@ -44,7 +45,7 @@ public class CommentServiceImpl implements CommentService {
 		Update updateQuery = new Update(); 
 		updateQuery.push("comments", commentEntity);
 		mongoTemplate.findAndModify(query, updateQuery, PostEntity.class);
-		return "Comment added";
+		return dateTime;
 	}
 
 	@Override

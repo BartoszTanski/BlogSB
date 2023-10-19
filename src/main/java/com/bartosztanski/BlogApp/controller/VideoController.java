@@ -44,8 +44,8 @@ public class VideoController {
 			@PathVariable("id") String id)
 			throws VideoNotFoundException, IllegalStateException, IOException {
 		
-		LOGGER.info("Inside PostController.getVideoById");
 		VideoEntity video = videoService.getVideo(id);
+		LOGGER.info("Returned details of video with id: "+id);
 		return ResponseEntity.ok(video);
 	}
 	
@@ -54,8 +54,8 @@ public class VideoController {
 	public ResponseEntity<String> addVideo(
 			@RequestParam("video") MultipartFile file) throws IOException {
 		
-		LOGGER.info("Inside PostController.addVideo");
 		String id = videoService.addVideo(file);
+		LOGGER.info("Added new wideo with id: "+id);
 		return ResponseEntity.ok(id);
 	}
 	
@@ -64,8 +64,8 @@ public class VideoController {
 	public void streamVideo(@PathVariable String id,
 			HttpServletResponse response) throws Exception, VideoNotFoundException {
 		
-		LOGGER.info("Inside PostController.streamVideo");
 	    VideoEntity video = videoService.getVideo(id);
+	    LOGGER.info("Returned steam of video with id: "+id);
 	    FileCopyUtils.copy(video.getStream(), response.getOutputStream());        
 	}
 	
@@ -73,18 +73,18 @@ public class VideoController {
 	@DeleteMapping("/video/{id}")
 	public ResponseEntity<String> deleteVideo(@PathVariable("id") String id) {
 		
-		LOGGER.info("Inside PostController.deleteVideo");
 		videoService.deleteVideo(id);
+		LOGGER.info("Deleted video with id: "+id);
 		return ResponseEntity.ok("Video deleted");
 	}
 	
 	//GET ALL VIDEOS ID'S
 	@GetMapping("/videos/")
 	public ResponseEntity<List<String>> getListOfAllVideos() {
-		
-		LOGGER.info("Inside PostController.getListOfAllVideos");
+	
 		List<String> videos = new LinkedList<>();
 		videos = videoService.getAllVideos();
+		LOGGER.info("Returned list of all videos ("+videos.size()+" ids)");
 		return ResponseEntity.ok(videos);
 	}
 }
