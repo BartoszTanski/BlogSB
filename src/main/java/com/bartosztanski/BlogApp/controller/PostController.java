@@ -147,7 +147,7 @@ public class PostController {
 		
 		PostResponse post = postService.getPostById(id);
 		
-		CacheControl cacheControl = CacheControl.maxAge(30, TimeUnit.SECONDS)
+		CacheControl cacheControl = CacheControl.maxAge(10, TimeUnit.SECONDS)
 			      .noTransform()
 			      .mustRevalidate();
 		

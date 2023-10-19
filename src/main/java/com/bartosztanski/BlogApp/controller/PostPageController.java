@@ -47,8 +47,9 @@ public class PostPageController {
 					.size(page.getSize())
 					.build();
 			
-			CacheControl cacheControl = CacheControl.maxAge(120, TimeUnit.SECONDS)
-				      .noTransform();
+			CacheControl cacheControl = CacheControl.maxAge(10, TimeUnit.SECONDS)
+				      .noTransform()
+				      .mustRevalidate();
 			
 			LOGGER.info("Returned "+posts.size()+" posts by page where page: "+lp);
 			return ResponseEntity.ok().cacheControl(cacheControl).body(pageResponse);

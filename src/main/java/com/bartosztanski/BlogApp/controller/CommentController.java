@@ -46,7 +46,7 @@ public class CommentController {
 													  .build();
 
 		LocalDateTime creationTime = commentService.addComment(commentRequest);
-		LOGGER.info("Added new comment to post "+postId+", created: "+creationTime);
+		LOGGER.info("Added new comment to post "+postId);
 		return new ResponseEntity<>(creationTime, HttpStatus.CREATED);
 	}
 	
