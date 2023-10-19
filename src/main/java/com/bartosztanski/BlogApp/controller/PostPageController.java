@@ -1,10 +1,12 @@
 package com.bartosztanski.BlogApp.controller;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,7 +48,10 @@ public class PostPageController {
 					.size(page.getSize())
 					.build();
 			
-			return ResponseEntity.ok().body(pageResponse);
+			CacheControl cacheControl = CacheControl.maxAge(120, TimeUnit.SECONDS)
+				      .noTransform();
+			
+			return ResponseEntity.ok().cacheControl(cacheControl).body(pageResponse);
 		}
 }
 

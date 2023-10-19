@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.bson.BsonBinarySubType;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +71,7 @@ public class PostController {
 											 .build();
 		
 		String id = postService.addPost(postRequest);
+		
 		return new ResponseEntity<>("Post: "+id+ " added succesfully ", HttpStatus.CREATED);
 	} 
 	
@@ -112,7 +115,11 @@ public class PostController {
 				.map(e -> e.entityToResponse())
 				.collect(Collectors.toList());
 		
-		return ResponseEntity.ok(posts);
+		CacheControl cacheControl = CacheControl.maxAge(60, TimeUnit.SECONDS)
+			      .noTransform()
+			      .mustRevalidate();
+		
+		return ResponseEntity.ok().cacheControl(cacheControl).body(posts);
 	}
 	
 	//Getting post by days interval
@@ -138,7 +145,12 @@ public class PostController {
 		
 		LOGGER.info("Inside PostController.getPostById");
 		PostResponse post = postService.getPostById(id);
-		return ResponseEntity.ok(post);
+		
+		CacheControl cacheControl = CacheControl.maxAge(30, TimeUnit.SECONDS)
+			      .noTransform()
+			      .mustRevalidate();
+		
+		return ResponseEntity.ok().cacheControl(cacheControl).body(post);
 	}
 	
 	//Getting 'limit' posts with most likes in last 'range' days
@@ -153,7 +165,10 @@ public class PostController {
 		List<PostResponse> topPosts = postService.getTopPosts(pageNumber, pageSize, daysRange)
 				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
 		
-		return ResponseEntity.ok(topPosts);	
+		CacheControl cacheControl = CacheControl.maxAge(120, TimeUnit.SECONDS)
+			      .noTransform();
+		
+		return ResponseEntity.ok().cacheControl(cacheControl).body(topPosts);	
 	}
 	
 	//Getting main image by post ID
@@ -162,7 +177,10 @@ public class PostController {
 		
 		LOGGER.info("Inside PostController.getImage");
 		byte[] image = postService.getImage(id);
-		return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(image);
+		
+		CacheControl cacheControl = CacheControl.maxAge(2419200, TimeUnit.SECONDS); //28 days
+		
+		return ResponseEntity.ok().cacheControl(cacheControl).contentType(MediaType.IMAGE_PNG).body(image);
 	}
 	
 	//Updating post likes +1 TODO add param. instead 2 controllers
@@ -204,7 +222,11 @@ public class PostController {
 				.map(e -> e.entityToResponse())
 				.collect(Collectors.toList());
 		
-		return ResponseEntity.ok(posts);
+		CacheControl cacheControl = CacheControl.maxAge(120, TimeUnit.SECONDS)
+			      .noTransform()
+			      .mustRevalidate();
+		
+		return ResponseEntity.ok().cacheControl(cacheControl).body(posts);
 	}	
 	
 	//API Status
