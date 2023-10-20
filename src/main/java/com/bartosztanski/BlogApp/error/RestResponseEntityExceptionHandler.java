@@ -36,4 +36,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 		ErrorMessage message = new ErrorMessage(HttpStatus.NOT_FOUND,videoNotFoundException.getMessage());
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(message);
 	}
+	
+	@ExceptionHandler(com.bartosztanski.BlogApp.error.InvalidPageNumberException.class)
+	public ResponseEntity<ErrorMessage> InvalidPageNumberException(
+			InvalidPageNumberException invalidPageNumberException, WebRequest webRequest) {
+		
+		ErrorMessage message = new ErrorMessage(HttpStatus.BAD_REQUEST,invalidPageNumberException.getMessage());
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+	}
 }

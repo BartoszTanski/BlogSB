@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.bartosztanski.BlogApp.error.InvalidPageNumberException;
 import com.bartosztanski.BlogApp.model.PostResponse;
 import com.bartosztanski.BlogApp.model.PostsPage;
 import com.bartosztanski.BlogApp.model.PostsPageResponse;
@@ -33,8 +35,9 @@ public class PostPageController {
 		private final Logger LOGGER = LoggerFactory.getLogger(PostPageController.class); 
 		
 		@GetMapping("/posts/page/{lp}")
-		public ResponseEntity<PostsPageResponse> getlAllPostsByPage(@PathVariable("lp")int lp) {
+		public ResponseEntity<PostsPageResponse> getlAllPostsByPage(@PathVariable("lp")int lp) throws InvalidPageNumberException {
 			
+			if (lp < 0) throw new InvalidPageNumberException("Page number cannot be less than zero!, send: "+lp);
 			PostsPage page = postService.getlAllPostsByPage(lp);
 			
 			List<PostResponse> posts = page.getPosts()
@@ -48,8 +51,8 @@ public class PostPageController {
 					.build();
 			
 			CacheControl cacheControl = CacheControl.maxAge(10, TimeUnit.SECONDS)
-				      .noTransform()
-				      .mustRevalidate();
+				    .noTransform()
+				    .mustRevalidate();
 			
 			LOGGER.info("Returned "+posts.size()+" posts by page where page: "+lp);
 			return ResponseEntity.ok().cacheControl(cacheControl).body(pageResponse);

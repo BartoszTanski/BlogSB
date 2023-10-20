@@ -65,7 +65,7 @@ public class VideoController {
 			HttpServletResponse response) throws Exception, VideoNotFoundException {
 		
 	    VideoEntity video = videoService.getVideo(id);
-	    LOGGER.info("Returned steam of video with id: "+id);
+	    LOGGER.info("Returned stream of video with id: "+id);
 	    FileCopyUtils.copy(video.getStream(), response.getOutputStream());        
 	}
 	

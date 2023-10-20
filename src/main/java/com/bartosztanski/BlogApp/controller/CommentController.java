@@ -32,7 +32,8 @@ public class CommentController {
 	private final Logger LOGGER = LoggerFactory.getLogger(CommentController.class);
 
 	@PostMapping("/{postId}/comments")
-	public ResponseEntity<LocalDateTime> addComment(@PathVariable("postId") String postId,
+	public ResponseEntity<LocalDateTime> addComment(
+			@PathVariable("postId") String postId,
 			@RequestParam("author") String author,
 			@RequestParam("content") String content, 
 			@RequestParam("profilePic") String profilePic) throws IOException {
@@ -51,7 +52,9 @@ public class CommentController {
 	}
 	
 	@DeleteMapping("/{postId}/{commentId}")
-	public ResponseEntity<String> deleteComment(@PathVariable("postId") String postId,@PathVariable("commentId") String commentId) {
+	public ResponseEntity<String> deleteComment(
+			@PathVariable("postId") String postId,
+			@PathVariable("commentId") String commentId) {
 		
 		commentService.deleteComment(postId, commentId);
 		LOGGER.info("Deleted comment from post "+postId+", comment id: "+commentId);

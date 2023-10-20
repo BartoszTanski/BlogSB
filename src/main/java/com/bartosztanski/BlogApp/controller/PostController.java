@@ -59,18 +59,18 @@ public class PostController {
 			@RequestParam("email") String email) throws PostInsertFailedException, IOException {
 		
 		PostRequest postRequest = PostRequest.builder()
-											 .title(title)
-											 .description(description)
-											 .author(author)
-											 .content(content)
-											 .tags(tags.split(","))
-											 .image(image!=null? new Binary(BsonBinarySubType.BINARY, image.getBytes()):null)
-											 .profilePic(profilePic)
-											 .time(LocalDateTime.now())
-											 .likes(0)
-											 .video(video)
-											 .email(email)
-											 .build();
+				.title(title)
+				.description(description)
+				.author(author)
+				.content(content)
+				.tags(tags.split(","))
+				.image(image!=null? new Binary(BsonBinarySubType.BINARY, image.getBytes()):null)
+				.profilePic(profilePic)
+				.time(LocalDateTime.now())
+				.likes(0)
+				.video(video)
+				.email(email)
+				.build();
 		
 		String id = postService.addPost(postRequest);
 		LOGGER.info("Added new post: "+id+", with title: "+title+", made by: "+author);
@@ -79,28 +79,32 @@ public class PostController {
 	
 	//Updating post by ID
 	@PutMapping("/posts")
-	public ResponseEntity<PostEntity> updatePost(@RequestParam("id") String id,@RequestParam("title") String title, 
+	public ResponseEntity<PostEntity> updatePost(
+			@RequestParam("id") String id,
+			@RequestParam("title") String title, 
 			@RequestParam("description") String description,
-			@RequestParam("author") String author,@RequestParam("content") String content,
-			@RequestParam("tags") String tags,@RequestParam("file") Optional<MultipartFile> file,
+			@RequestParam("author") String author,
+			@RequestParam("content") String content,
+			@RequestParam("tags") String tags,
+			@RequestParam("image") Optional<MultipartFile> image,
 			@RequestParam("profilePic") String profilePic,
 			@RequestParam("video") String video,
 			@RequestParam("email") String email) throws IOException, PostNotFoundExcepction {
 		
 		PostRequest postRequest = PostRequest.builder()
-											 .title(title)
-											 .description(description)
-											 .author(author)
-											 .content(content)
-											 .tags(tags.split(","))
-											 .image(file.isPresent()?new Binary(
-													 BsonBinarySubType.BINARY, 
-													 file.get().getBytes()):null)
-											 .profilePic(profilePic)
-											 .time(LocalDateTime.now())
-											 .video(video)
-											 .email(email)
-											 .build();
+				.title(title)
+				.description(description)
+				.author(author)
+				.content(content)
+				.tags(tags.split(","))
+				.image(image.isPresent()?new Binary(
+						BsonBinarySubType.BINARY, 
+						image.get().getBytes()):null)
+				.profilePic(profilePic)
+				.time(LocalDateTime.now())
+				.video(video)
+				.email(email)
+				.build();
 		
 		postService.updatePost(id, postRequest);
 		LOGGER.info("Updated post: "+id+", made by: "+author);
@@ -117,8 +121,8 @@ public class PostController {
 				.collect(Collectors.toList());
 		
 		CacheControl cacheControl = CacheControl.maxAge(60, TimeUnit.SECONDS)
-			      .noTransform()
-			      .mustRevalidate();
+				.noTransform()
+				.mustRevalidate();
 		
 		LOGGER.info("Retured all posts");
 		return ResponseEntity.ok().cacheControl(cacheControl).body(posts);
@@ -148,8 +152,8 @@ public class PostController {
 		PostResponse post = postService.getPostById(id);
 		
 		CacheControl cacheControl = CacheControl.maxAge(10, TimeUnit.SECONDS)
-			      .noTransform()
-			      .mustRevalidate();
+				.noTransform()
+				.mustRevalidate();
 		
 		LOGGER.info("Returned post with id: "+id);
 		return ResponseEntity.ok().cacheControl(cacheControl).body(post);
@@ -157,17 +161,22 @@ public class PostController {
 	
 	//Getting 'limit' posts with most likes in last 'range' days
 	@GetMapping("/posts/top")
-	public ResponseEntity<List<PostResponse>> getTopPosts(@RequestParam("page") Optional<Integer> page,
-			@RequestParam("limit") Optional<Integer> limit, @RequestParam("range") Optional<Integer> range) {
+	public ResponseEntity<List<PostResponse>> getTopPosts(
+			@RequestParam("page") Optional<Integer> page,
+			@RequestParam("limit") Optional<Integer> limit,
+			@RequestParam("range") Optional<Integer> range) {
 
 		int pageNumber = page.orElseGet(() -> 0);
 		int pageSize = limit.orElseGet(() -> 5);
 		int daysRange = range.orElseGet(() -> 7);
+		
 		List<PostResponse> topPosts = postService.getTopPosts(pageNumber, pageSize, daysRange)
-				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
+				.stream()
+				.map(e -> e.entityToResponse())
+				.collect(Collectors.toList());
 		
 		CacheControl cacheControl = CacheControl.maxAge(120, TimeUnit.SECONDS)
-			      .noTransform();
+				.noTransform();
 		
 		LOGGER.info("Returned page: "+pageNumber+", with "+pageSize+" posts with most likes in the last "+daysRange+" days");
 		return ResponseEntity.ok().cacheControl(cacheControl).body(topPosts);	
@@ -208,7 +217,9 @@ public class PostController {
 	public ResponseEntity<List<PostResponse>> getPostsByTag(@PathVariable("tagId") String tagId)  {
 		
 		List<PostResponse> posts = postService.getPostsByTag(tagId)
-				.stream().map(e -> e.entityToResponse()).collect(Collectors.toList());
+				.stream()
+				.map(e -> e.entityToResponse())
+				.collect(Collectors.toList());
 		
 		LOGGER.info("Returned all posts with tag: "+tagId);
 		return ResponseEntity.ok(posts);
@@ -224,8 +235,8 @@ public class PostController {
 				.collect(Collectors.toList());
 		
 		CacheControl cacheControl = CacheControl.maxAge(120, TimeUnit.SECONDS)
-			      .noTransform()
-			      .mustRevalidate();
+				.noTransform()
+				.mustRevalidate();
 		
 		LOGGER.info("Returned "+posts.size()+" posts by regex: "+regex);
 		return ResponseEntity.ok().cacheControl(cacheControl).body(posts);
