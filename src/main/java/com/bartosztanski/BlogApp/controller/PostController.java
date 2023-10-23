@@ -221,7 +221,7 @@ public class PostController {
 				.map(e -> e.entityToResponse())
 				.collect(Collectors.toList());
 		
-		LOGGER.info("Returned all posts with tag: "+tagId);
+		LOGGER.info("Returned "+posts.size()+" posts with tag: "+tagId);
 		return ResponseEntity.ok(posts);
 	}
 	
