@@ -165,14 +165,14 @@ public class PostServiceImpl implements PostService{
 	}
 
 	@Override
-	public PostsPage getlAllPostsByPage(int lp) {
-		Pageable pageable = PageRequest.of(lp, 2, Sort.by("time").descending());
+	public PostsPage getlAllPostsByPage(int lp, int size) {
+		Pageable pageable = PageRequest.of(lp, size, Sort.by("time").descending());
 		Page<PostEntity> pages = postRepository.findAll(pageable);
 		List<PostEntity> posts = pages.getContent();
-		int size = pages.getTotalPages();
+		int _size = pages.getTotalPages();
 		PostsPage page = PostsPage.builder()
 				.posts(posts)
-				.size(size)
+				.size(_size)
 				.build();
 		return page;
 	}

@@ -1,6 +1,7 @@
 package com.bartosztanski.BlogApp.controller;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bartosztanski.BlogApp.error.InvalidPageNumberException;
@@ -35,10 +37,15 @@ public class PostPageController {
 		private final Logger LOGGER = LoggerFactory.getLogger(PostPageController.class); 
 		
 		@GetMapping("/posts/page/{lp}")
-		public ResponseEntity<PostsPageResponse> getlAllPostsByPage(@PathVariable("lp")int lp) throws InvalidPageNumberException {
+		public ResponseEntity<PostsPageResponse> getlAllPostsByPage(
+				@PathVariable("lp")int lp,
+				@RequestParam("size")Optional<Integer> size) throws InvalidPageNumberException {
 			
+			int _size = size.orElse(3);
 			if (lp < 0) throw new InvalidPageNumberException("Page number cannot be less than zero!, send: "+lp);
-			PostsPage page = postService.getlAllPostsByPage(lp);
+			if (_size < 0) throw new InvalidPageNumberException("Page size cannot be less than zero!, send: "+_size);
+			
+			PostsPage page = postService.getlAllPostsByPage(lp,_size);
 			
 			List<PostResponse> posts = page.getPosts()
 					.stream()

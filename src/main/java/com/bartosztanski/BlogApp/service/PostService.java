@@ -30,5 +30,5 @@ public interface PostService {
 	public List<PostEntity> getTopPosts(int page, int limit, int days);
 	public List<PostEntity> getPostsByTag(String tagId);
 	public List<PostEntity> findPostByRegexpTitle(String regexp);
-	public PostsPage getlAllPostsByPage(int lp);
+	public PostsPage getlAllPostsByPage(int lp, int size);
 }
