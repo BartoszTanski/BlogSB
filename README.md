@@ -1,7 +1,7 @@
 # Backend with spring boot for Blog application (deployed on Azure web services, still in development)
 
 ### It is a spring boot app that provides REST API endpoints for frontend React app, it enables CRUD operations on posts and comments. Backend is connected to MongoDB database (Azure Cosmos DB).
-#### Developer further on another repository [Link]https://github.com/BartoszTanski/BlogAppWithSecurity
+#### Developer further on another repository [Link] https://github.com/BartoszTanski/BlogAppWithSecurity
 
 #### Application functionalites:
 - CRUD operations on posts
@@ -10,6 +10,9 @@
 - image compression
 - searching for posts by title(regex) and by tag
 - sorting posts and pagination
+- sending emails with html body and attachments
+- user authentication and registration
+- email verification/reseting password
 
 #### Frontend application is deployed on azure web services and accesible (_[here](https://bartosztanski.azurewebsites.net "bartosztanski.azurewebsites.net")_)
 #### Backend application is also deployed on azure web services and accesible (_[here](https://blogbartosz.azurewebsites.net/ "blogbartosz.azurewebsites.net")_), endpoints list at the bottom of README
